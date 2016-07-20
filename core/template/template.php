@@ -135,7 +135,7 @@ class template {
 		$__count  = count(self::$data);
 		for($__i  = 0;$__i < $__count;$__i++){
 			$__key= $__keys[$__i];
-			$$__key = self::$data[$__i];
+			$$__key = self::$data[$__key];
 		}
 		unset($__keys,$__key,$__i,$__count);
 		if(is_string($fileName)){
