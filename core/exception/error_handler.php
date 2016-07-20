@@ -22,10 +22,28 @@
 namespace core\exception;
 
 
+use core\controller\controller;
+
 class error_handler {
 	public static function handler($no,$str,$file,$line){
+		controller::clean();
 		$file = file($file);
-		echo '@'.$file[$line-1];
+		echo '###@'.$file[$line-1];
 		exit();
+	}
+
+	public static function shutDown(){
+		$no     = E_CORE_ERROR;
+		$str    = 'shutdown';
+		$file   = 'unknown file';
+		$line   = 0;
+		$error  = error_get_last();
+		if($error !== null){
+			$no     = $error['type'];
+			$str    = $error['message'];
+			$file   = $error['file'];
+			$line   = $error['line'];
+		}
+		self::handler($no,$str,$file,$line);
 	}
 }
