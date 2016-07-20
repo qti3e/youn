@@ -1,0 +1,159 @@
+<?php
+/*****************************************************************************
+ *         In the name of God the Most Beneficent the Most Merciful          *
+ *___________________________________________________________________________*
+ *   This program is free software: you can redistribute it and/or modify    *
+ *   it under the terms of the GNU General Public License as published by    *
+ *   the Free Software Foundation, either version 3 of the License, or       *
+ *   (at your option) any later version.                                     *
+ *___________________________________________________________________________*
+ *   This program is distributed in the hope that it will be useful,         *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+ *   GNU General Public License for more details.                            *
+ *___________________________________________________________________________*
+ *   You should have received a copy of the GNU General Public License       *
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.   *
+ *___________________________________________________________________________*
+ *                             Created by  Qti3e                             *
+ *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
+ *****************************************************************************/
+
+namespace core\template;
+
+/**
+ * Class template
+ * @package core\template
+ */
+class template {
+	/**
+	 * Save and storage template's data
+	 * @var array
+	 */
+	private static $data = [];
+
+	/**
+	 * Set a variable with name of $key
+	 * @param $key
+	 *  Name of variable
+	 * @param $value
+	 *  Value of variable
+	 *
+	 * @return mixed
+	 *  Return $value
+	 */
+	public static function assign($key,$value){
+		return self::$data[$key]   = $value;
+	}
+
+	/**
+	 * Set variable with calling a function!
+	 *  Look at this example
+	 *      template::assign('foo','bar')
+	 *      template::foo('bar')
+	 * those two codes are equal and they do same.
+	 * @param $name
+	 *  Name of variable
+	 * @param $arguments
+	 *  Value of variable
+	 * @return void
+	 */
+	public static function __callStatic($name, $arguments) {
+		self::$data[$name]  = $arguments[0];
+	}
+
+	/**
+	 * Unset a variable if exists
+	 * @param $key
+	 *  Name of variable
+	 * @return mixed
+	 *  Return false if key does not exist and return
+	 *  old value of variable if it exists.
+	 */
+	public static function remove($key){
+		$re = false;
+		if(isset(self::$data[$key])){
+			$re = self::$data[$key];
+			unset(self::$data[$key]);
+		}
+		return $re;
+	}
+
+	/**
+	 * Same as isset function but it works on self::$data
+	 * @param $key
+	 *  Name of variable
+	 * @return bool
+	 *  Return true if variable exists
+	 */
+	public static function isDefined($key){
+		return isset(self::$data[$key]);
+	}
+
+	/**
+	 * Clear and reset data with array input
+	 * @param array $data
+	 *  Value of ner data.
+	 *  Keys ate name of variables and values are values :)
+	 * @return array
+	 *  Return the old value of data
+	 */
+	public static function setData($data) {
+		$re = self::$data;
+		self::$data = $data;
+		return $re;
+	}
+
+	/**
+	 *  Return all of data as array
+	 * @return array
+	 */
+	public static function getData() {
+		return self::$data;
+	}
+
+	/**
+	 * Remove all of data
+	 * @return array
+	 *  Return last data's value
+	 *
+	 */
+	public static function flushData(){
+		$re = self::$data;
+		self::$data = [];
+		return $re;
+	}
+
+	/**
+	 * Display template to the output
+	 * @param $fileName
+	 *  It can be a array to and it's path of files you want to load as template
+	 * @return void
+	 */
+	public static function display($fileName){
+		$__keys   = array_keys(self::$data);
+		$__count  = count(self::$data);
+		for($__i  = 0;$__i < $__count;$__i++){
+			$__key= $__keys[$__i];
+			$$__key = self::$data[$__i];
+		}
+		unset($__keys,$__key,$__i,$__count);
+		if(is_string($fileName)){
+			if(file_exists($fileName)){
+				include $fileName;
+			}else{
+				//error
+			}
+		}elseif(is_array($fileName)){
+			$__keys = array_keys($fileName);
+			$__count= count($fileName);
+			for($__i = 0;$__i < $__count;$__i++){
+				if(file_exists($fileName[$__keys[$__i]])){
+					include $fileName[$__keys[$__i]];
+				}else{
+					//error
+				}
+			}
+		}
+	}
+}
