@@ -24,26 +24,37 @@ namespace core\exception;
 
 use core\controller\controller;
 
+/**
+ * Class error_handler
+ * @package core\exception
+ */
 class error_handler {
+	/**
+	 * @param $no
+	 * @param $str
+	 * @param $file
+	 * @param $line
+	 *
+	 * @return void
+	 */
 	public static function handler($no,$str,$file,$line){
 		controller::clean();
-		$file = file($file);
-		echo '###@'.$file[$line-1];
+		$lines = file($file);
+		echo '###@'.$lines[$line-1].$file.':'.$line."\n$str";
 		exit();
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function shutDown(){
-		$no     = E_CORE_ERROR;
-		$str    = 'shutdown';
-		$file   = 'unknown file';
-		$line   = 0;
 		$error  = error_get_last();
 		if($error !== null){
 			$no     = $error['type'];
 			$str    = $error['message'];
 			$file   = $error['file'];
 			$line   = $error['line'];
+			self::handler($no,$str,$file,$line);
 		}
-		self::handler($no,$str,$file,$line);
 	}
 }

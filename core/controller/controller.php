@@ -22,8 +22,23 @@
 namespace core\controller;
 
 
+use core\exception\error_handler;
+
+/**
+ * Class controller
+ * @package core\controller
+ */
 class controller{
+	/**
+	 * @var bool
+	 */
 	private $configLoaded   = false;
+
+	/**
+	 * @param $class
+	 *
+	 * @return void
+	 */
 	public function autoLoad($class){
 		$file   = str_replace('\\','/',$class).'.php';
 		if(file_exists($file)){
@@ -32,6 +47,10 @@ class controller{
 
 		}
 	}
+
+	/**
+	 * controller constructor.
+	 */
 	public function __construct() {
 		//Don't display any error
 		error_reporting(0);
@@ -42,16 +61,25 @@ class controller{
 		spl_autoload_register([$this,'autoLoad']);
 		//Handle all of errors with our own error handler
 		set_error_handler('core\\exception\\error_handler::handler');
-
+		register_shutdown_function(['core\exception\error_handler','shutDown']);
 		//Start an output buffering, see __destruct() for more detail.
 		ob_start();
 	}
 
+	/**
+	 * @param $configFile
+	 *
+	 * @return void
+	 */
 	public function config($configFile){
 		if(file_exists($configFile)){
 			$this->configLoaded = true;
 		}
 	}
+
+	/**
+	 * @return void
+	 */
 	public function run(){
 		if($this->configLoaded){
 			//Read file url and run the specific page
@@ -61,8 +89,11 @@ class controller{
 		}
 	}
 
-	public function clean(){
-		ob_clean();
+	/**
+	 * @return void
+	 */
+	public static function clean(){
+		if (ob_get_contents()) ob_end_clean();
 	}
 
 	public function __destruct() {
@@ -70,6 +101,12 @@ class controller{
 
 	}
 
+	/**
+	 * @param $key
+	 * @param $value
+	 *
+	 * @return void
+	 */
 	public static function header($key,$value){
 		/**
 		 * TODO: save headers to an array and send headers at the end, so we can have a new function called destroyHeader that remove headers!
