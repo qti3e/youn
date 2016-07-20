@@ -23,6 +23,7 @@ namespace core\exception;
 
 
 use core\controller\controller;
+use core\template\template;
 
 /**
  * Class error_handler
@@ -40,7 +41,14 @@ class error_handler {
 	public static function handler($no,$str,$file,$line){
 		controller::clean();
 		$lines = file($file);
-		echo '###@'.$lines[$line-1].$file.':'.$line."\n$str";
+		template::flushData();
+		template::assign('errorNo',$no);
+		template::assign('errorStr',$str);
+		template::assign('errorFile',$file);
+		template::assign('errorLine',$line);
+		template::assign('lines',$lines);
+		template::assign('line',$lines[$line-1]);
+		template::display('core/exception/template.php');
 		exit();
 	}
 
