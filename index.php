@@ -20,5 +20,6 @@ include 'core/controller/controller.php';
 $controller = new \core\controller\controller();
 $controller->config('yu_config.php');
 $controller->run();
-print(ob_get_contents());
-ob_end_clean();
+if(ob_get_contents()){
+	ob_end_flush();
+}
