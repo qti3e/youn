@@ -22,14 +22,16 @@
 namespace core\controller;
 
 
+use application\controller;
 use core\exception\error_handler;
+use core\exception\youn_exception;
 use core\template\template;
 
 /**
- * Class controller
+ * Class URLController
  * @package core\controller
  */
-class controller{
+class URLController{
 	/**
 	 * @var bool
 	 */
@@ -44,8 +46,6 @@ class controller{
 		$file   = str_replace('\\','/',$class).'.php';
 		if(file_exists($file)){
 			include_once($file);
-		}else{
-
 		}
 	}
 
@@ -81,15 +81,23 @@ class controller{
 	}
 
 	/**
+	 * @param string $params
+	 *
 	 * @return void
 	 */
-	public function run(){
+	public function run($params = ''){
 		template::flushData();
 		if($this->configLoaded){
 			//Read file url and run the specific page
+			if(preg_match('/^[a-zA-Z0-9\/]*$/',$params)){
+				$params = explode('/',$params);
+				controller::open($params);
+			}else{
+				error_handler::DisplayError('Illegal Characters','Your request has some illegal characters');
+			}
 		}else{
-
 			//throw an error that says "Internal server error: you should set config file first"
+			error_handler::DisplayError('Load config file','You should load config file.');
 		}
 	}
 
@@ -102,7 +110,6 @@ class controller{
 
 	public function __destruct() {
 		//Display all of output at the end, so we can send new header to the client in all of running time
-
 	}
 
 	/**
@@ -116,5 +123,25 @@ class controller{
 		 * TODO: save headers to an array and send headers at the end, so we can have a new function called destroyHeader that remove headers!
 		 */
 		header(trim($key).' : '.trim($value).';');
+	}
+
+	/**
+	 * @param $class
+	 * @param $function
+	 * @param $param
+	 *
+	 * @return void
+	 */
+	public static function divert($class,$function,$param){
+		if(class_exists($class)){
+			$page = new $class($function,$param);
+			if(method_exists($param,$function)){
+				call_user_func_array([$page,$function],$param);
+			}else{
+				call_user_func_array([$page,'__loader'],$param);
+			}
+		}else{
+			controller::__callClass($class,$function,$param);
+		}
 	}
 }
