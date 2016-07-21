@@ -23,6 +23,7 @@ namespace core\controller;
 
 
 use core\exception\error_handler;
+use core\template\template;
 
 /**
  * Class controller
@@ -53,8 +54,7 @@ class controller{
 	 */
 	public function __construct() {
 		//Don't display any error
-		error_reporting(0);
-		ini_set('display_errors', 0);
+		error_reporting(E_CORE_ERROR);
 		//Set include path to the script's root directory
 		set_include_path(__DIR__);
 		//Autoload is way to auto include files when a class called
@@ -81,6 +81,7 @@ class controller{
 	 * @return void
 	 */
 	public function run(){
+		template::flushData();
 		if($this->configLoaded){
 			//Read file url and run the specific page
 		}else{
