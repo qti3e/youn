@@ -31,6 +31,7 @@ use core\template\template;
  */
 class error_handler {
 	/**
+	 * Handle all of errors
 	 * @param $no
 	 * @param $str
 	 * @param $file
@@ -48,11 +49,12 @@ class error_handler {
 		template::assign('errorLine',$line);
 		template::assign('lines',$lines);
 		template::assign('line',$lines[$line-1]);
-		template::display('core/exception/template.php');
+		template::display('core/exception/templates/template.php');
 		exit();
 	}
 
 	/**
+	 * Handle Fatal errors
 	 * @return void
 	 */
 	public static function shutDown(){
@@ -64,5 +66,21 @@ class error_handler {
 			$line   = $error['line'];
 			self::handler($no,$str,$file,$line);
 		}
+	}
+
+	/**
+	 * Handle some framework's error like 'Can't load config file.'
+	 * @param $header
+	 * @param $message
+	 *
+	 * @return void
+	 */
+	public static function DisplayError($header,$message){
+		controller::clean();
+		template::flushData();
+		template::assign('header',$header);
+		template::assign('message',$message);
+		template::display('core/exceptions/templates/errors.php');
+		exit();
 	}
 }
