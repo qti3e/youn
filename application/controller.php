@@ -19,9 +19,16 @@
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
 
-namespace core\controller;
+namespace application;
 
 
-interface controllerInterface {
+use core\controller\MainControllerInterface;
 
+class controller implements MainControllerInterface{
+	public static function open($params){
+
+	}
+	public static function __callClass($class,$page,$params){
+
+	}
 }
