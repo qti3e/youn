@@ -16,10 +16,15 @@
  * @license GPL 3                                                            *
  * @author QTI3E                                                             *
  *****************************************************************************/
-include 'core/controller/controller.php';
-$controller = new \core\controller\controller();
+include 'core/controller/URLController.php';
+$controller = new \core\controller\URLController();
 $controller->config('yu_config.php');
-$controller->run();
+$keys   = array_keys($_GET);
+$params = '';
+if(isset($keys[0])){
+	$params = $keys[0];
+}
+$controller->run($params);
 if(ob_get_contents()){
 	ob_end_flush();
 }
