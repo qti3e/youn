@@ -80,7 +80,7 @@ class error_handler {
 		template::flushData();
 		template::assign('header',$header);
 		template::assign('message',$message);
-		template::display('core/exceptions/templates/errors.php');
+		template::display('core/exception/templates/errors.php');
 		exit();
 	}
 }
