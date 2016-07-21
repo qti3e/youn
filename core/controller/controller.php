@@ -54,7 +54,7 @@ class controller{
 	 */
 	public function __construct() {
 		//Don't display any error
-		error_reporting(E_CORE_ERROR);
+		error_reporting(0);
 		//Set include path to the script's root directory
 		set_include_path(__DIR__);
 		//Autoload is way to auto include files when a class called
@@ -74,7 +74,10 @@ class controller{
 	public function config($configFile){
 		if(file_exists($configFile)){
 			$this->configLoaded = true;
+			include $configFile;
+			return;
 		}
+		error_handler::DisplayError('Can\'t load config file.','Can\'t find "'.$configFile.'" <h3>How to fix it?</h3>Rename <b>yu_config_sample.php</b> to <b>yu_config.php</b> and put our own values in their right place.');
 	}
 
 	/**
