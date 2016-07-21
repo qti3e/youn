@@ -22,7 +22,7 @@
 namespace core\exception;
 
 
-use core\controller\controller;
+use core\controller\URLController;
 use core\template\template;
 
 /**
@@ -40,7 +40,7 @@ class error_handler {
 	 * @return void
 	 */
 	public static function handler($no,$str,$file,$line){
-		controller::clean();
+		URLController::clean();
 		$lines = file($file);
 		template::flushData();
 		template::assign('errorNo',$no);
@@ -76,7 +76,7 @@ class error_handler {
 	 * @return void
 	 */
 	public static function DisplayError($header,$message){
-		controller::clean();
+		URLController::clean();
 		template::flushData();
 		template::assign('header',$header);
 		template::assign('message',$message);
