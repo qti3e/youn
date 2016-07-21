@@ -31,7 +31,10 @@ class template {
 	 * @var array
 	 */
 	private static $data = [];
-
+	/**
+	 * @var array
+	 */
+	private static $template    = [];
 	/**
 	 * Set a variable with name of $key
 	 * @param $key
@@ -155,5 +158,15 @@ class template {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Set templates name that you want to display
+	 * @param $template
+	 *
+	 * @return void
+	 */
+	public static function setTemplate($template){
+		self::$template = $template;
 	}
 }
