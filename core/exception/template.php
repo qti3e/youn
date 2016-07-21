@@ -39,7 +39,7 @@
 				padding: 5px;
 			}
 			.error{
-				background-color: #ff2020;
+				background-color: #cfcfcf;
 				color: #ffffff;
 			}
 		</style>
