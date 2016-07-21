@@ -26,13 +26,13 @@
 			html{
 				height: 100%;
 				width: 100%;
-				background-color: #cccccc;
+				background-color: #fff;
 			}
 			body{
-				width: 700px;
-				height: 500px;
+				width: 95%;
+				height: 300px;
 				background-color: #ffffff;
-				box-shadow: #000 0px 10px 20px;
+				box-shadow: #ccc 0px 10px 20px;
 				display: block;
 				margin-right: auto;
 				margin-left: auto;
