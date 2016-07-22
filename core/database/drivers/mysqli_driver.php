@@ -122,13 +122,4 @@ class mysqli_driver implements driver{
 	public function execute(){
 		return $this->prepare->execute();
 	}
-
-	/**
-	 * @param $string
-	 *
-	 * @return string
-	 */
-	public function quote($string){
-		return '\''.$this->object->real_escape_string($string).'\'';
-	}
 }

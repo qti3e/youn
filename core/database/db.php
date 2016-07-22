@@ -103,8 +103,9 @@ class db {
 				self::$query .= '\''.
 					self::real_escape_string($keys[$i]).
 					'\'=\''
-					.self::real_escape_string($validator[$keys[$i]]).'\' ';
+					.self::real_escape_string($validator[$keys[$i]]).'\' AND';
 			}
+			self::$query = rtrim(self::$query,'AND');
 		}elseif(is_string($validator)){
 			self::$query .= $validator;
 		}
@@ -125,8 +126,9 @@ class db {
 				self::$query .= '\''.
 					self::real_escape_string($keys[$i]).
 					'\''.$comparison.'\''
-					.self::real_escape_string($validator[$keys[$i]]).'\' ';
+					.self::real_escape_string($validator[$keys[$i]]).'\' AND';
 			}
+			self::$query = rtrim(self::$query,'AND');
 		}elseif(is_string($validator)){
 			self::$query .= $validator;
 		}
@@ -197,5 +199,82 @@ class db {
 	 */
 	public static function multiOrder($column,$order = 'ASC'){
 		self::$query .= ', "'.self::real_escape_string($column).'" '.($order == 'ASC' ? 'ASC' : 'DESC');
+	}
+
+	/**
+	 * @param $number
+	 *
+	 * @return void
+	 */
+	public static function limit($number){
+		self::$query .= ' LIMIT '.intval($number);
+	}
+
+	/**
+	 * @param $table
+	 * @param $column
+	 *
+	 * @return void
+	 */
+	public static function max($table,$column){
+		self::$query .= 'SELECT MAX('.self::real_escape_string($column).') FROM '.self::real_escape_string($table);
+	}
+
+	/**
+	 * @param $table
+	 * @param $column
+	 *
+	 * @return void
+	 */
+	public static function min($table,$column){
+		self::$query .= 'SELECT MIN('.self::real_escape_string($column).') FROM '.self::real_escape_string($table);
+	}
+
+	/**
+	 * @param $table
+	 * @param $column
+	 *
+	 * @return void
+	 */
+	public static function sum($table,$column){
+		self::$query .= 'SELECT SUM('.self::real_escape_string($column).') FROM '.self::real_escape_string($table);
+	}
+
+	/**
+	 * @param $table
+	 * @param $column
+	 *
+	 * @return void
+	 */
+	public static function avg($table,$column){
+		self::$query .= 'SELECT AVG('.self::real_escape_string($column).') FROM '.self::real_escape_string($table);
+	}
+
+	/**
+	 * @param        $table
+	 * @param string $column
+	 *
+	 * @return void
+	 */
+	public static function count($table,$column = 'id'){
+		self::$query .= 'SELECT COUNT('.self::real_escape_string($column).') FROM '.self::real_escape_string($table);
+	}
+
+	/**
+	 * @param $table
+	 *
+	 * @return void
+	 */
+	public static function drop($table){
+		self::$query .= 'DROP TABLE '.self::real_escape_string($table);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function execute(){
+		$re = self::$driver->query(self::$query);
+		self::clear();
+		return $re;
 	}
 }

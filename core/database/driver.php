@@ -52,11 +52,4 @@ interface driver {
 	 * @return mixed
 	 */
 	public function query($query);
-
-	/**
-	 * @param $string
-	 *
-	 * @return mixed
-	 */
-	public function quote($string);
 }
