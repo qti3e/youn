@@ -52,9 +52,9 @@ class controller implements MainControllerInterface{
 	 * @param $page
 	 * @param $params
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public static function __callClass($class,$page,$params){
-
+		return '';
 	}
 }
