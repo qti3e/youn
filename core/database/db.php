@@ -21,6 +21,8 @@
 
 namespace core\database;
 
+use core\database\drivers\mysqli_driver;
+use core\database\drivers\pdo_driver;
 use core\exception\youn_exception;
 
 /**
@@ -28,16 +30,38 @@ use core\exception\youn_exception;
  * @package core\database
  */
 class db {
+	/**
+	 * @var string
+	 */
 	private static $query = '';
+	/**
+	 * @var driver
+	 */
 	private static $driver;
 
 	/**
 	 * db constructor.
-	 *
-	 * @param driver $driver
 	 */
-	public function __construct(driver $driver){
-		self::$driver = $driver;
+	public function __construct(){
+		if(strtolower(db_driver) == 'mysqli'){
+			self::$driver = new mysqli_driver();
+		}
+		switch(strtolower(db_driver)){
+			case 'mysqli':
+				self::$driver = new mysqli_driver();
+				break;
+			case 'pdo':
+				self::$driver = new pdo_driver();
+				break;
+			default:
+				if(function_exists('mysqli_connect')){
+					self::$driver = new mysqli_driver();
+				}elseif(extension_loaded('pdo')){
+					self::$driver = new pdo_driver();
+				}else{
+					throw new youn_exception('Can\'t load application because both of pdo and mysqli are disabled');
+				}
+		}
 	}
 
 	/**
@@ -86,7 +110,7 @@ class db {
 		}else{
 			$column = implode(', ',$column);
 		}
-		self::$query .= 'SELECT ('.$column.') FROM '.$table;
+		self::$query .= 'SELECT ('.self::real_escape_string($column).') FROM '.self::real_escape_string($table);
 	}
 
 	/**
