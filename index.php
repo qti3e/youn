@@ -24,6 +24,12 @@ $params = '';
 if(isset($keys[0])){
 	$params = $keys[0];
 }
+$count = count($keys);
+if($count > 1){
+	if($keys[$count -1 ] == 'json'){
+		$controller->setReturnJSON(true);
+	}
+}
 $controller->run($params);
 if(ob_get_contents()){
 	ob_end_flush();
