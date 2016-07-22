@@ -166,6 +166,7 @@ class template {
 				return;
 			}
 		}
+		set_include_path('application/templates/');
 		$__keys   = array_keys(self::$data);
 		$__count  = count(self::$data);
 		for($__i  = 0;$__i < $__count;$__i++){
@@ -175,7 +176,7 @@ class template {
 		unset($__keys,$__key,$__i,$__count);
 		if(is_string($fileName)){
 			if(file_exists('application/templates/'.$fileName.'.php')){
-				include 'application/templates/'.$fileName.'.php';
+				include $fileName.'.php';
 			}else{
 				//error
 			}
@@ -184,7 +185,7 @@ class template {
 			$__count= count($fileName);
 			for($__i = 0;$__i < $__count;$__i++){
 				if(file_exists('application/templates/'.$fileName[$__keys[$__i]].'.php')){
-					include 'application/templates/'.$fileName[$__keys[$__i]].'.php';
+					include $fileName[$__keys[$__i]].'.php';
 				}else{
 					//error
 				}

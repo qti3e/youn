@@ -1,1 +1,1 @@
-<?php var_dump($this->getReturn());
+<?php var_dump($this->getReturn()); include 'a.php';
