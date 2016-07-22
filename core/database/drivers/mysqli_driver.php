@@ -40,10 +40,6 @@ class mysqli_driver implements driver{
 	 * @var
 	 */
 	private $errorDetail;
-	/**
-	 * @var \mysqli_stmt
-	 */
-	private $prepare;
 
 	public function __construct() {
 		$this->object   =   new \mysqli(db_host,db_user,db_pass,db_name,db_port);
@@ -88,38 +84,5 @@ class mysqli_driver implements driver{
 	 */
 	public function query($query){
 		return $this->object->query($query);
-	}
-
-	/**
-	 * @param $query
-	 *
-	 * @return \mysqli_stmt
-	 */
-	public function prepare($query){
-		$this->prepare = $this->object->prepare($query);
-		return $this->prepare;
-	}
-
-	/**
-	 * @param        $params
-	 * @param string $type
-	 *
-	 * @return void
-	 */
-	public function bind_param($params,$type = '') {
-		if($this->prepare == null){
-
-		}
-		if($type === ''){
-			$type   = str_repeat('s',count($params));
-		}
-		$this->prepare->bind_param($type,$params);
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function execute(){
-		return $this->prepare->execute();
 	}
 }
