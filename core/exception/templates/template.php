@@ -52,11 +52,15 @@
 		</p>
 		<address>File: <?php echo $errorFile; ?> & Line <?php echo $errorLine ?></address>
 		<code>
+			<?php if(isset($lines[$errorLine-2])){?>
 			<?php echo ($errorLine-1).substr(str_replace('&lt;?php&nbsp;','',highlight_string('<?php '.$lines[$errorLine-2],true)),6,-7); ?>
-			<b class="error">
-				<?php echo $errorLine.substr(str_replace('&lt;?php&nbsp;','',highlight_string('<?php '.$line,true)),6,-7); ?>
-			</b>
-			<?php echo ($errorLine+1).substr(str_replace('&lt;?php&nbsp;','',highlight_string('<?php '.$lines[$errorLine],true)),6,-7); ?>
+				<?php } ?>
+				<b class="error">
+					<?php echo $errorLine.substr(str_replace('&lt;?php&nbsp;','',highlight_string('<?php '.$line,true)),6,-7); ?>
+				</b>
+			<?php if(isset($lines[$errorLine])){?>
+				<?php echo ($errorLine+1).substr(str_replace('&lt;?php&nbsp;','',highlight_string('<?php '.$lines[$errorLine],true)),6,-7); ?>
+			<?php } ?>
 		</code>
 	</body>
 </html>
