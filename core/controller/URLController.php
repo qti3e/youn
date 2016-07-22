@@ -23,6 +23,7 @@ namespace core\controller;
 
 
 use application\controller;
+use core\database\db;
 use core\exception\error_handler;
 use core\template\template;
 
@@ -66,6 +67,8 @@ class URLController{
 		set_error_handler('core\\exception\\error_handler::handler');
 		set_exception_handler('core\exception\error_handler::exception');
 		register_shutdown_function(['core\exception\error_handler','shutDown']);
+		//Load database
+		new db();
 		//Start an output buffering, see __destruct() for more detail.
 		ob_start();
 	}
