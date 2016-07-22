@@ -36,6 +36,10 @@ class template {
 	 */
 	private static $template    = [];
 	/**
+	 * @var
+	 */
+	protected $return;
+	/**
 	 * Set a variable with name of $key
 	 * @param $key
 	 *  Name of variable
@@ -103,10 +107,32 @@ class template {
 	 */
 	public static function setData($data) {
 		$re = self::$data;
-		self::$data = $data;
+		self::$data = $data + $re;
 		return $re;
 	}
 
+	/**
+	 * @param $data
+	 *
+	 * @return void
+	 */
+	public function setReturn($data){
+		$this->return = $data;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getReturn() {
+		return $this->return;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getTemplate() {
+		return self::$template;
+	}
 	/**
 	 *  Return all of data as array
 	 * @return array
@@ -133,7 +159,13 @@ class template {
 	 *  It can be a array to and it's path of files you want to load as template
 	 * @return void
 	 */
-	public static function display($fileName){
+	public function display($fileName = null){
+		if($fileName == null){
+			$fileName = self::$template;
+			if(empty(self::$template)){
+				return;
+			}
+		}
 		$__keys   = array_keys(self::$data);
 		$__count  = count(self::$data);
 		for($__i  = 0;$__i < $__count;$__i++){
@@ -142,8 +174,8 @@ class template {
 		}
 		unset($__keys,$__key,$__i,$__count);
 		if(is_string($fileName)){
-			if(file_exists($fileName)){
-				include $fileName;
+			if(file_exists('application/templates/'.$fileName.'.php')){
+				include 'application/templates/'.$fileName.'.php';
 			}else{
 				//error
 			}
@@ -151,8 +183,8 @@ class template {
 			$__keys = array_keys($fileName);
 			$__count= count($fileName);
 			for($__i = 0;$__i < $__count;$__i++){
-				if(file_exists($fileName[$__keys[$__i]])){
-					include $fileName[$__keys[$__i]];
+				if(file_exists('application/templates/'.$fileName[$__keys[$__i]].'.php')){
+					include 'application/templates/'.$fileName[$__keys[$__i]].'.php';
 				}else{
 					//error
 				}
@@ -167,6 +199,6 @@ class template {
 	 * @return void
 	 */
 	public static function setTemplate($template){
-		self::$template = $template;
+		self::$template[] = $template;
 	}
 }
