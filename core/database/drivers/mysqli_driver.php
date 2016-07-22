@@ -47,6 +47,7 @@ class mysqli_driver implements driver{
 			$this->error = true;
 			$this->errorDetail = mysqli_connect_error();
 		}
+		$this->object->set_charset(db_charset);
 	}
 
 	/**
