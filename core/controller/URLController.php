@@ -25,7 +25,6 @@ namespace core\controller;
 use application\controller;
 use core\exception\error_handler;
 use core\template\template;
-use core\view\JSON;
 
 /**
  * Class URLController
@@ -149,19 +148,19 @@ class URLController{
 			}else{
 				$re = call_user_func_array([$page,'__loader'],['page'=>$function]+$param);
 			}
-			self::clean();
-			if(self::$json){
-				print(json_encode($re));
-			}else{
-				$template = new template();
-				if(is_array($re)){
-					template::setData($re);
-				}
-				$template->setReturn($re);
-				$template->display();
-			}
 		}else{
-			controller::__callClass($class,$function,$param);
+			$re = controller::__callClass($class,$function,$param);
+		}
+		self::clean();
+		if(self::$json){
+			print(json_encode($re));
+		}else{
+			$template = new template();
+			if(is_array($re)){
+				template::setData($re);
+			}
+			$template->setReturn($re);
+			$template->display();
 		}
 	}
 
