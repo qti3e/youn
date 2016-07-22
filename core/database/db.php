@@ -18,6 +18,78 @@
  *                             Created by  Qti3e                             *
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
-return [
 
-];
+namespace core\database;
+
+/**
+ * Class db
+ * @package core\database
+ */
+class db {
+	private static $query = '';
+	private static $driver;
+
+	/**
+	 * db constructor.
+	 *
+	 * @param driver $driver
+	 */
+	public function __construct(driver $driver){
+		self::$driver = $driver;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function clear(){
+		$re = self::$query;
+		self::$query = '';
+		return $re;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getQuery() {
+		return self::$query;
+	}
+
+	/**
+	 * @param       $table
+	 * @param array $column
+	 *
+	 * @return void
+	 */
+	public static function select($table,$column = []){
+		if(empty($column)){
+			$column = '*';
+		}else{
+			$column = implode(', ',$column);
+		}
+		self::$query .= 'SELECT ('.$column.') FROM '.$table;
+	}
+
+	/**
+	 * @param $validator
+	 *
+	 * @return void
+	 */
+	public static function where($validator){
+		self::$query .= ' WHERE ';
+		if(is_array($validator)){
+			$keys   = array_keys($validator);
+			$count  = count($validator);
+			for($i  = 0;$i < $count;$i++){
+				self::$query .= self::$driver->quote($keys[$i]).'='.self::$driver->quote($validator[$keys[$i]]).' ';
+			}
+		}elseif(is_string($validator)){
+			self::$query .= $validator;
+		}
+	}
+
+	public static function whereOperator($validator,$operator){
+
+	}
+
+	//public static function
+}

@@ -85,4 +85,16 @@ class error_handler {
 		$template->display('errors','core/exception/templates/');
 		exit();
 	}
+
+	/**
+	 * @param \Exception $exception
+	 *
+	 * @return void
+	 */
+	public static function exception($exception){
+		$line       = $exception->getLine();
+		$file       = $exception->getFile();
+		$message    = $exception->getMessage();
+		self::handler(E_CORE_ERROR,$message,$file,$line);
+	}
 }

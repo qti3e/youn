@@ -64,6 +64,7 @@ class URLController{
 		spl_autoload_register([$this,'autoLoad']);
 		//Handle all of errors with our own error handler
 		set_error_handler('core\\exception\\error_handler::handler');
+		set_exception_handler('core\exception\error_handler::exception');
 		register_shutdown_function(['core\exception\error_handler','shutDown']);
 		//Start an output buffering, see __destruct() for more detail.
 		ob_start();

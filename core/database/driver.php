@@ -18,6 +18,45 @@
  *                             Created by  Qti3e                             *
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
-return [
 
-];
+namespace core\database;
+
+/**
+ * Interface driver
+ * @package core\database
+ */
+interface driver {
+	/**
+	 * @return mixed
+	 */
+	public function close();
+
+	/**
+	 * @return mixed
+	 */
+	public function getObject();
+
+	/**
+	 * @return mixed
+	 */
+	public function getErrorDetail();
+
+	/**
+	 * @return mixed
+	 */
+	public function isError();
+
+	/**
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
+	public function query($query);
+
+	/**
+	 * @param $string
+	 *
+	 * @return mixed
+	 */
+	public function quote($string);
+}
