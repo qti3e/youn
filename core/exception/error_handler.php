@@ -49,7 +49,8 @@ class error_handler {
 		template::assign('errorLine',$line);
 		template::assign('lines',$lines);
 		template::assign('line',$lines[$line-1]);
-		template::display('core/exception/templates/template.php');
+		$template = new template();
+		$template->display('template','core/exception/templates/');
 		exit();
 	}
 
@@ -80,7 +81,8 @@ class error_handler {
 		template::flushData();
 		template::assign('header',$header);
 		template::assign('message',$message);
-		template::display('core/exception/templates/errors.php');
+		$template = new template();
+		$template->display('errors','core/exception/templates/');
 		exit();
 	}
 }
