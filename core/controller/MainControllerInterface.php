@@ -27,6 +27,10 @@ namespace core\controller;
  */
 interface MainControllerInterface {
 	/**
+	 * @return mixed
+	 */
+	public static function index();
+	/**
 	 * @param $params
 	 *
 	 * @return mixed
