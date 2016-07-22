@@ -24,8 +24,8 @@ namespace core\controller;
 
 use application\controller;
 use core\exception\error_handler;
-use core\exception\youn_exception;
 use core\template\template;
+use core\view\JSON;
 
 /**
  * Class URLController
@@ -36,6 +36,10 @@ class URLController{
 	 * @var bool
 	 */
 	private $configLoaded   = false;
+	/**
+	 * @var bool
+	 */
+	private static $json    = false;
 
 	/**
 	 * @param $class
@@ -89,11 +93,15 @@ class URLController{
 		template::flushData();
 		if($this->configLoaded){
 			//Read file url and run the specific page
-			if(preg_match('/^[a-zA-Z0-9\/]*$/',$params)){
-				$params = explode('/',$params);
-				controller::open($params);
+			if(empty($params)){
+				controller::index();
 			}else{
-				error_handler::DisplayError('Illegal Characters','Your request has some illegal characters');
+				if(preg_match('/^[a-zA-Z0-9\/]*$/',$params)){
+					$params = explode('/',$params);
+					controller::open($params);
+				}else{
+					error_handler::DisplayError('Illegal Characters','Your request has some illegal characters');
+				}
 			}
 		}else{
 			//throw an error that says "Internal server error: you should set config file first"
@@ -128,20 +136,41 @@ class URLController{
 	/**
 	 * @param $class
 	 * @param $function
-	 * @param $param
+	 * @param array $param
 	 *
 	 * @return void
 	 */
-	public static function divert($class,$function,$param){
-		if(class_exists($class)){
-			$page = new $class($function,$param);
-			if(method_exists($param,$function)){
-				call_user_func_array([$page,$function],$param);
+	public static function divert($class,$function,array $param = []){
+		$_class = '\\application\\controllers\\'.$class;
+		if(class_exists($_class)){
+			$page = new $_class($function,$param);
+			if(method_exists($page,$function)){
+				$re = call_user_func_array([$page,$function],$param);
 			}else{
-				call_user_func_array([$page,'__loader'],$param);
+				$re = call_user_func_array([$page,'__loader'],['page'=>$function]+$param);
+			}
+			self::clean();
+			if(self::$json){
+				print(json_encode($re));
+			}else{
+				$template = new template();
+				if(is_array($re)){
+					template::setData($re);
+				}
+				$template->setReturn($re);
+				$template->display();
 			}
 		}else{
 			controller::__callClass($class,$function,$param);
 		}
+	}
+
+	/**
+	 * @param $value
+	 *
+	 * @return void
+	 */
+	public function setReturnJSON($value){
+		self::$json = $value;
 	}
 }
