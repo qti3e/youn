@@ -46,9 +46,14 @@ define('db_name','test');
 define('db_user','root');
 /**
  * Constant `db_pass`
+ * Database password
  */
 define('db_pass','');
-
+/**
+ * Constant `db_charset`
+ * Character encoding
+ */
+define('db_charset','utf8');
 /*
  * General configurations
  * #general
