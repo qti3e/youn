@@ -67,8 +67,6 @@ class URLController{
 		set_error_handler('core\\exception\\error_handler::handler');
 		set_exception_handler('core\exception\error_handler::exception');
 		register_shutdown_function(['core\exception\error_handler','shutDown']);
-		//Load database
-		new db();
 		//Start an output buffering, see __destruct() for more detail.
 		ob_start();
 	}
@@ -94,6 +92,8 @@ class URLController{
 	 */
 	public function run($params = ''){
 		template::flushData();
+		//Load database
+		new db();
 		if($this->configLoaded){
 			//Read file url and run the specific page
 			if(empty($params)){
