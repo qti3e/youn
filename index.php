@@ -25,11 +25,13 @@ if(isset($keys[0])){
 	$params = $keys[0];
 }
 $count = count($keys);
-if($keys[$count - 1] == 'json'){
-	if($count <= 1){
-		$params = '';
+if(isset($keys[$count - 1])){
+	if($keys[$count - 1] == 'json'){
+		if($count <= 1){
+			$params = '';
+		}
+		$controller->setReturnJSON(true);
 	}
-	$controller->setReturnJSON(true);
 }
 $controller->run($params);
 if(ob_get_contents()){
