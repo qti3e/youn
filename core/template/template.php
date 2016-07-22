@@ -142,6 +142,47 @@ class template {
 	}
 
 	/**
+	 * Display template to the output
+	 * @param $fileName
+	 *  It can be a array to and it's path of files you want to load as template
+	 * @param string $includePath
+	 * @return void
+	 */
+	public function display($fileName = null,$includePath = 'application/templates/'){
+		if($fileName == null){
+			$fileName = self::$template;
+			if(empty(self::$template)){
+				return;
+			}
+		}
+		set_include_path($includePath);
+		$__keys   = array_keys(self::$data);
+		$__count  = count(self::$data);
+		for($__i  = 0;$__i < $__count;$__i++){
+			$__key= $__keys[$__i];
+			$$__key = self::$data[$__key];
+		}
+		unset($__keys,$__key,$__i,$__count);
+		if(is_string($fileName)){
+			if(file_exists($includePath.$fileName.'.php')){
+				include $includePath.$fileName.'.php';
+			}else{
+				//error
+			}
+		}elseif(is_array($fileName)){
+			$__keys = array_keys($fileName);
+			$__count= count($fileName);
+			for($__i = 0;$__i < $__count;$__i++){
+				if(file_exists($includePath.$fileName[$__keys[$__i]].'.php')){
+					include $includePath.$fileName[$__keys[$__i]].'.php';
+				}else{
+					//error
+				}
+			}
+		}
+	}
+
+	/**
 	 * Remove all of data
 	 * @return array
 	 *  Return last data's value
@@ -151,46 +192,6 @@ class template {
 		$re = self::$data;
 		self::$data = [];
 		return $re;
-	}
-
-	/**
-	 * Display template to the output
-	 * @param $fileName
-	 *  It can be a array to and it's path of files you want to load as template
-	 * @return void
-	 */
-	public function display($fileName = null){
-		if($fileName == null){
-			$fileName = self::$template;
-			if(empty(self::$template)){
-				return;
-			}
-		}
-		set_include_path('application/templates/');
-		$__keys   = array_keys(self::$data);
-		$__count  = count(self::$data);
-		for($__i  = 0;$__i < $__count;$__i++){
-			$__key= $__keys[$__i];
-			$$__key = self::$data[$__key];
-		}
-		unset($__keys,$__key,$__i,$__count);
-		if(is_string($fileName)){
-			if(file_exists('application/templates/'.$fileName.'.php')){
-				include $fileName.'.php';
-			}else{
-				//error
-			}
-		}elseif(is_array($fileName)){
-			$__keys = array_keys($fileName);
-			$__count= count($fileName);
-			for($__i = 0;$__i < $__count;$__i++){
-				if(file_exists('application/templates/'.$fileName[$__keys[$__i]].'.php')){
-					include $fileName[$__keys[$__i]].'.php';
-				}else{
-					//error
-				}
-			}
-		}
 	}
 
 	/**
