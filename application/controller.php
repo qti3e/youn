@@ -23,10 +23,15 @@ namespace application;
 
 
 use core\controller\MainControllerInterface;
+use core\controller\URLController;
+use core\helper\variable;
 
 class controller implements MainControllerInterface{
+	public static function index(){
+		URLController::divert('user','main');
+	}
 	public static function open($params){
-
+		URLController::divert('user',$params[0],variable::substr($params,1));
 	}
 	public static function __callClass($class,$page,$params){
 
