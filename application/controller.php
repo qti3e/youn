@@ -26,13 +26,34 @@ use core\controller\MainControllerInterface;
 use core\controller\URLController;
 use core\helper\variable;
 
+/**
+ * Class controller
+ * @package application
+ */
 class controller implements MainControllerInterface{
+	/**
+	 * @return void
+	 */
 	public static function index(){
 		URLController::divert('user','main');
 	}
+
+	/**
+	 * @param $params
+	 *
+	 * @return void
+	 */
 	public static function open($params){
 		URLController::divert('user',$params[0],variable::substr($params,1));
 	}
+
+	/**
+	 * @param $class
+	 * @param $page
+	 * @param $params
+	 *
+	 * @return void
+	 */
 	public static function __callClass($class,$page,$params){
 
 	}

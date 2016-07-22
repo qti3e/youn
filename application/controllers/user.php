@@ -25,12 +25,29 @@ namespace application\controllers;
 use core\controller\YU_Controller;
 use core\template\template;
 
+/**
+ * Class user
+ * @package application\controllers
+ */
 class user extends YU_Controller{
+	/**
+	 * @param string $page
+	 * @param string $param1
+	 * @param string $param2
+	 * @param string $param3
+	 *
+	 * @return string
+	 */
 	public function __loader($page,$param1 = '',$param2 = '',$param3 = '') {
 		template::setTemplate('empty');
 		return 'You are in page: '.$page;
 	}
 
+	/**
+	 * @param string $param1
+	 *
+	 * @return string
+	 */
 	public function main($param1 = ''){
 		template::setTemplate('empty');
 		return 'Home sweet home';
