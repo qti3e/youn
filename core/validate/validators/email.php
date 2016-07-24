@@ -19,9 +19,11 @@
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
 
-namespace core\helper;
+namespace core\validate\validators;
 
 
-class validator {
+use core\validate\validatorInterface;
+
+class email implements validatorInterface{
 
 }
