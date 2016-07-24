@@ -19,9 +19,11 @@
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
 
-namespace core\helper;
+namespace core\algorithms;
 
 
-class algorithms {
+use core\exception\youn_exception;
+
+class algorithmsException extends youn_exception{
 
 }
