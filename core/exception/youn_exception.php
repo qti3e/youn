@@ -21,7 +21,12 @@
 
 namespace core\exception;
 
-
+/**
+ * Class youn_exception
+ * @package core\exception
+ */
 class youn_exception extends \Exception{
-
+	public function log(){
+		//TODO write it after complete log\writer
+	}
 }

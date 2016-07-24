@@ -19,62 +19,9 @@
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
 
-namespace core\i18n;
+namespace core\image;
 
-use core\exception\error_handler;
 
-/**
- * Class lang
- * @package core\i18n
- */
-class lang {
-	/**
-	 * @var string
-	 */
-	private static $lang = '';
+interface driver {
 
-	/**
-	 * @param $str
-	 *
-	 * @return string
-	 */
-	public static function get($str){
-		$str    = strtolower($str);
-		if(isset(static::$lang[$str])){
-			return static::$lang[$str];
-		}
-		return ucwords(str_replace('_',' ',$str));
-	}
-
-	/**
-	 * @param $langCode
-	 *
-	 * @return void
-	 */
-	public static function load($langCode){
-		if(file_exists('core/i18n/langs/'.$langCode.'.php')){
-			static::$lang = include 'core/i18n/langs/'.$langCode.'.php';
-		}
-		error_handler::DisplayError('Can\'t load language file','Can not find "core/i18n/langs/'.$langCode.'.php"');
-	}
-
-	/**
-	 * lang constructor.
-	 *
-	 * @param string $langCode
-	 */
-	public function __construct($langCode = '') {
-		if($langCode !== ''){
-			static::load($langCode);
-		}
-	}
-
-	/**
-	 * @param $name
-	 *
-	 * @return string
-	 */
-	public function __get($name) {
-		return static::get($name);
-	}
 }

@@ -22,6 +22,50 @@
 namespace core\session;
 
 
-class SessionManager {
+use core\cookie\CookieManager;
+use core\http\http;
+use core\database\KeyValueStore;
 
+/**
+ * Class SessionManager
+ * @package core\session
+ */
+class SessionManager extends KeyValueStore{
+	public function __construct() {
+		session_start();
+		$sessionId  = CookieManager::get('youn_session_id');
+		if($sessionId === false){
+			$sessionId  = sha1(time().http::getUserIP().uniqid('youn_session_id'));
+			CookieManager::set('youn_session_id',$sessionId,CookieManager::createNeverDieTime());
+		}
+		session_id($sessionId);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getStore(){
+		return $_SESSION;
+	}
+
+	/**
+	 * @param $store
+	 *
+	 * @return mixed
+	 */
+	public static function setStore($store) {
+		$re = $_SESSION;
+		$_SESSION   = $store;
+		return $re;
+	}
+
+	/**
+	 * @param $name
+	 * @param $value
+	 *
+	 * @return mixed
+	 */
+	protected static function _set($name, $value) {
+		return $_SESSION[$name] = $value;
+	}
 }

@@ -50,7 +50,7 @@ class template {
 	 *  Return $value
 	 */
 	public static function assign($key,$value){
-		return self::$data[$key]   = $value;
+		return static::$data[$key]   = $value;
 	}
 
 	/**
@@ -66,7 +66,7 @@ class template {
 	 * @return void
 	 */
 	public static function __callStatic($name, $arguments) {
-		self::$data[$name]  = $arguments[0];
+		static::$data[$name]  = $arguments[0];
 	}
 
 	/**
@@ -79,22 +79,22 @@ class template {
 	 */
 	public static function remove($key){
 		$re = false;
-		if(isset(self::$data[$key])){
-			$re = self::$data[$key];
-			unset(self::$data[$key]);
+		if(isset(static::$data[$key])){
+			$re = static::$data[$key];
+			unset(static::$data[$key]);
 		}
 		return $re;
 	}
 
 	/**
-	 * Same as isset function but it works on self::$data
+	 * Same as isset function but it works on static::$data
 	 * @param $key
 	 *  Name of variable
 	 * @return bool
 	 *  Return true if variable exists
 	 */
 	public static function isDefined($key){
-		return isset(self::$data[$key]);
+		return isset(static::$data[$key]);
 	}
 
 	/**
@@ -106,8 +106,8 @@ class template {
 	 *  Return the old value of data
 	 */
 	public static function setData($data) {
-		$re = self::$data;
-		self::$data = $data + $re;
+		$re = static::$data;
+		static::$data = $data + $re;
 		return $re;
 	}
 
@@ -131,14 +131,14 @@ class template {
 	 * @return array
 	 */
 	public static function getTemplate() {
-		return self::$template;
+		return static::$template;
 	}
 	/**
 	 *  Return all of data as array
 	 * @return array
 	 */
 	public static function getData() {
-		return self::$data;
+		return static::$data;
 	}
 
 	/**
@@ -150,17 +150,17 @@ class template {
 	 */
 	public function display($fileName = null,$includePath = 'application/templates/'){
 		if($fileName == null){
-			$fileName = self::$template;
-			if(empty(self::$template)){
+			$fileName = static::$template;
+			if(empty(static::$template)){
 				return;
 			}
 		}
 		set_include_path($includePath);
-		$__keys   = array_keys(self::$data);
-		$__count  = count(self::$data);
+		$__keys   = array_keys(static::$data);
+		$__count  = count(static::$data);
 		for($__i  = 0;$__i < $__count;$__i++){
 			$__key= $__keys[$__i];
-			$$__key = self::$data[$__key];
+			$$__key = static::$data[$__key];
 		}
 		unset($__keys,$__key,$__i,$__count);
 		if(is_string($fileName)){
@@ -189,8 +189,8 @@ class template {
 	 *
 	 */
 	public static function flushData(){
-		$re = self::$data;
-		self::$data = [];
+		$re = static::$data;
+		static::$data = [];
 		return $re;
 	}
 
@@ -201,6 +201,6 @@ class template {
 	 * @return void
 	 */
 	public static function setTemplate($template){
-		self::$template[] = $template;
+		static::$template[] = $template;
 	}
 }

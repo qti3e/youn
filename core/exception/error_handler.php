@@ -65,7 +65,7 @@ class error_handler {
 			$str    = $error['message'];
 			$file   = $error['file'];
 			$line   = $error['line'];
-			self::handler($no,$str,$file,$line);
+			static::handler($no,$str,$file,$line);
 		}
 	}
 
@@ -95,6 +95,6 @@ class error_handler {
 		$line       = $exception->getLine();
 		$file       = $exception->getFile();
 		$message    = $exception->getMessage();
-		self::handler(E_CORE_ERROR,$message,$file,$line);
+		static::handler(E_CORE_ERROR,$message,$file,$line);
 	}
 }

@@ -19,62 +19,23 @@
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
 
-namespace core\i18n;
-
-use core\exception\error_handler;
+namespace core\http;
 
 /**
- * Class lang
- * @package core\i18n
+ * Class http
+ *  Mange http protocol works
+ * @package core\http
  */
-class lang {
+class http {
 	/**
-	 * @var string
+	 * @return mixed
 	 */
-	private static $lang = '';
-
-	/**
-	 * @param $str
-	 *
-	 * @return string
-	 */
-	public static function get($str){
-		$str    = strtolower($str);
-		if(isset(static::$lang[$str])){
-			return static::$lang[$str];
+	public static function getUserIP(){
+		if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+			return $_SERVER['HTTP_CLIENT_IP'];
+		}elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+			return $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
-		return ucwords(str_replace('_',' ',$str));
-	}
-
-	/**
-	 * @param $langCode
-	 *
-	 * @return void
-	 */
-	public static function load($langCode){
-		if(file_exists('core/i18n/langs/'.$langCode.'.php')){
-			static::$lang = include 'core/i18n/langs/'.$langCode.'.php';
-		}
-		error_handler::DisplayError('Can\'t load language file','Can not find "core/i18n/langs/'.$langCode.'.php"');
-	}
-
-	/**
-	 * lang constructor.
-	 *
-	 * @param string $langCode
-	 */
-	public function __construct($langCode = '') {
-		if($langCode !== ''){
-			static::load($langCode);
-		}
-	}
-
-	/**
-	 * @param $name
-	 *
-	 * @return string
-	 */
-	public function __get($name) {
-		return static::get($name);
+		return $_SERVER['REMOTE_ADDR'];
 	}
 }

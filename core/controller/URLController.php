@@ -23,8 +23,9 @@ namespace core\controller;
 
 
 use application\controller;
-use core\database\db;
+use core\database\query;
 use core\exception\error_handler;
+use core\session\SessionManager;
 use core\template\template;
 
 /**
@@ -92,8 +93,7 @@ class URLController{
 	 */
 	public function run($params = ''){
 		template::flushData();
-		//Load database
-		new db();
+		static::loader();
 		if($this->configLoaded){
 			//Read file url and run the specific page
 			if(empty($params)){
@@ -155,8 +155,8 @@ class URLController{
 		}else{
 			$re = controller::__callClass($class,$function,$param);
 		}
-		self::clean();
-		if(self::$json){
+		static::clean();
+		if(static::$json){
 			print(json_encode($re));
 		}else{
 			$template = new template();
@@ -174,6 +174,15 @@ class URLController{
 	 * @return void
 	 */
 	public function setReturnJSON($value){
-		self::$json = $value;
+		static::$json = $value;
+	}
+
+	/**
+	 * @return void
+	 */
+	protected static function loader(){
+		//Load database
+		new query();
+		new SessionManager();
 	}
 }

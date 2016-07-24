@@ -19,9 +19,11 @@
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
 
-namespace core\helper;
+namespace core\sockets;
 
 
-class mailer {
+use core\exception\youn_exception;
+
+class socketException extends youn_exception{
 
 }
