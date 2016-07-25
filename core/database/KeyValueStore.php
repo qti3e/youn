@@ -143,4 +143,42 @@ class KeyValueStore {
 		}
 		return $return;
 	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return void
+	 */
+	protected static function _remove($name){
+		unset(static::$store[$name]);
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return void
+	 */
+	public static function remove($name){
+		static::_remove($name);
+	}
+
+	/**
+	 * @param $pattern
+	 *
+	 * @return array
+	 */
+	public static function removePattern($pattern){
+		if($pattern === null){
+			return array_keys(static::getStore());
+		}
+		$keys   = array_keys(static::getStore());
+		$count  = count($keys);
+		$return = [];
+		for($i  = 0;$i < $count;$i++){
+			if(preg_match($pattern,$keys[$i])){
+				static::remove($keys[$i]);
+			}
+		}
+		return $return;
+	}
 }
