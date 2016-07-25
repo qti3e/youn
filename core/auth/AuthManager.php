@@ -21,7 +21,83 @@
 
 namespace core\auth;
 
+use core\session\SessionManager;
 
+/**
+ * Class AuthManager
+ * @package core\auth
+ */
 class AuthManager {
+	/**
+	 * @var bool
+	 */
+	protected static $login     = null;
+	/**
+	 * @var null
+	 */
+	protected static $username  = null;
 
+	/**
+	 * @return bool
+	 */
+	public static function isLogin() {
+		if(static::$login === null){
+			static::$login  = (SessionManager::get('youn_auth_is_login') === 'true');
+			if(static::$login){
+				static::$username   = SessionManager::get('youn_auth_login');
+			}
+		}
+		return static::$login;
+	}
+
+	/**
+	 * @param $validator
+	 * @param $checker
+	 *
+	 * @return void
+	 */
+	public static function login($validator,$checker){
+
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function logout(){
+
+	}
+
+	/**
+	 * @return null
+	 */
+	public static function getUsername(){
+		return static::$username;
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function createResetPasswordId(){
+
+	}
+
+	/**
+	 * @param $resetId
+	 * @param $oldPassword
+	 * @param $newPassword
+	 *
+	 * @return void
+	 */
+	public static function resetPassword($resetId,$oldPassword,$newPassword){
+
+	}
+
+	/**
+	 * @param $resetId
+	 *
+	 * @return void
+	 */
+	public static function isResetPasswordValid($resetId){
+
+	}
 }
