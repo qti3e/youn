@@ -26,6 +26,24 @@ namespace core\exception;
  * @package core\exception
  */
 class youn_exception extends \Exception{
+	/**
+	 * youn_exception constructor.
+	 *
+	 * @param string         $function
+	 * @param string         $message
+	 * @param int            $code
+	 * @param \Exception|null $previous
+	 */
+	public function __construct($function,$message = "", $code = 0, \Exception $previous = null) {
+		parent::__construct($message, $code, $previous);
+		if(method_exists($this,$function)){
+			$this->$function($message,$code);
+		}
+	}
+
+	/**
+	 * @return void
+	 */
 	public function log(){
 		//TODO write it after complete log\writer
 	}
