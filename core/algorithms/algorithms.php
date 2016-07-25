@@ -86,8 +86,12 @@ class algorithms {
 	 * @param int $to
 	 *
 	 * @return int
+	 * @throws algorithmsException
 	 */
 	public static function factorial($n , $to = 1){
+		if($n > 500){
+			throw new algorithmsException('LargeNumber','factorial');
+		}
 		$result = 1;
 		for($i = $to;$i <= $n;$i++){
 			$result *= $i;
@@ -100,8 +104,12 @@ class algorithms {
 	 * @param $n
 	 *
 	 * @return float
+	 * @throws algorithmsException
 	 */
 	public static function fibonacci($n){
+		if($n > 1000){
+			throw new algorithmsException('LargeNumber','fibonacci');
+		}
 		return (static::fastexp(static::gr,$n) - (1/static::fastexp(-static::gr,$n))) / (2*static::gr-1);
 	}
 
@@ -109,8 +117,17 @@ class algorithms {
 	 * @param $a
 	 *
 	 * @return bool
+	 * @throws algorithmsException
 	 */
 	public static function  is_prime($a){
+		/**
+		 * Largest 8 bit number
+		 *  Dec: ‭4,294,967,295
+		 * It's not very large because this function takes lots of time‬
+		 */
+		if($a > 0XFFFFFFFF){
+			throw new algorithmsException('LargeNumber','is_prime');
+		}
 		if ($a == 1) return false;
 		if ($a == 2) return true;
 		if ($a % 2 == 0) return false;
