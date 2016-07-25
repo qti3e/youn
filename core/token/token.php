@@ -21,7 +21,47 @@
 
 namespace core\token;
 
+use core\session\SessionManager;
 
+/**
+ * Class token
+ * @package core\token
+ */
 class token {
+	/**
+	 * @param $pageName
+	 *
+	 * @return string
+	 */
+	public static function create($pageName){
+		$token  = sha1(uniqid('token_').$pageName);
+		SessionManager::set('youn_token_'.$token,strtolower(trim($pageName)));
+		return $token;
+	}
 
+	/**
+	 * @param $token
+	 * @param $pageName
+	 *
+	 * @return bool
+	 */
+	public static function isValid($token,$pageName){
+		return (SessionManager::get('youn_token_'.$token) === strtolower(trim($pageName)));
+	}
+
+	/**
+	 * @param $token
+	 *
+	 * @return void
+	 */
+	public static function remove($token){
+		SessionManager::remove($token);
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function clear(){
+		SessionManager::removePattern('/^youn_token_.+$/');
+	}
 }
