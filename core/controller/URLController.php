@@ -26,7 +26,7 @@ use application\controller;
 use core\database\query;
 use core\exception\error_handler;
 use core\session\SessionManager;
-use core\template\template;
+use core\view\template;
 
 /**
  * Class URLController

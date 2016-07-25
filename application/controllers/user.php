@@ -23,7 +23,8 @@ namespace application\controllers;
 
 
 use core\controller\YU_Controller;
-use core\template\template;
+use core\database\query;
+use core\view\template;
 
 /**
  * Class user

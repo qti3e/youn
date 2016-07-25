@@ -23,7 +23,7 @@ namespace core\exception;
 
 
 use core\controller\URLController;
-use core\template\template;
+use core\view\template;
 
 /**
  * Class error_handler
