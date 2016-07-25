@@ -24,6 +24,18 @@ namespace core\algorithms;
 
 use core\exception\youn_exception;
 
+/**
+ * Class algorithmsException
+ * @package core\algorithms
+ */
 class algorithmsException extends youn_exception{
-
+	/**
+	 * @param $message
+	 *
+	 * @return bool
+	 */
+	public function LargeNumber($message){
+		$this->message = "Very large number in <algorithms::$message>";
+		return true;
+	}
 }
