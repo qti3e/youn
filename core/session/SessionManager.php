@@ -68,4 +68,13 @@ class SessionManager extends KeyValueStore{
 	protected static function _set($name, $value) {
 		return $_SESSION[$name] = $value;
 	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return void
+	 */
+	protected static function _remove($name){
+		unset($_SESSION[$name]);
+	}
 }
