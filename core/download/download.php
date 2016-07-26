@@ -21,7 +21,36 @@
 
 namespace core\download;
 
-//Force download and etc...
-class download {
+use core\exception\youn_exception;
+use core\http\http;
+use core\view\template;
 
+/**
+ * Class download
+ * @package core\download
+ */
+class download {
+	/**
+	 * Use this function only for setting headers, for sending file your controller function should returns file content at the end :)
+	 * @param $file
+	 *  File url
+	 * @return bool|string
+	 *  Returns file contents
+	 * @throws youn_exception
+	 *  When file does not exists
+	 */
+	public static function forceDownload($file){
+		if(!file_exists($file)){
+			throw new youn_exception('','File does not exists.');
+		}
+		template::clean();
+		http::header('Content-Description','File Transfer');
+		http::header('Content-Type','application/octet-stream');
+		http::header('Content-Disposition','attachment; filename="'.basename($file).'"');
+		http::header('Expires',0);
+		http::header('Cache-Control','must-revalidate');
+		http::header('Pragma','public');
+		http::header('Content-Length',filesize($file));
+		return file_get_contents($file);
+	}
 }
