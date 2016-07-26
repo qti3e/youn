@@ -33,13 +33,19 @@ class custom implements validatorInterface{
 	 * @var string
 	 */
 	protected $pattern  = '';
-
+	/**
+	 * @var bool
+	 */
+	protected $callable = false;
 	/**
 	 * custom constructor.
 	 *
 	 * @param $pattern
 	 */
 	public function __construct($pattern) {
+		if(is_callable($pattern)){
+			$this->callable = true;
+		}
 		$this->pattern  = $pattern;
 	}
 
@@ -47,6 +53,9 @@ class custom implements validatorInterface{
 	 * @return string
 	 */
 	public function get_pattern() {
+		if($this->callable){
+			return 'CALLABLE';
+		}
 		return $this->pattern;
 	}
 
@@ -56,6 +65,9 @@ class custom implements validatorInterface{
 	 * @return bool
 	 */
 	public function is_valid($input) {
+		if($this->callable){
+			return (bool)$this->pattern($input);
+		}
 		return preg_match($this->pattern,$input);
 	}
 }
