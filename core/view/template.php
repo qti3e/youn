@@ -203,4 +203,11 @@ class template {
 	public static function setTemplate($template){
 		static::$template[] = $template;
 	}
+
+	/**
+	 * @return void
+	 */
+	public static function clean(){
+		if (ob_get_contents()) ob_end_clean();
+	}
 }

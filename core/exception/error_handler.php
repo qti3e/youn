@@ -40,7 +40,7 @@ class error_handler {
 	 * @return void
 	 */
 	public static function handler($no,$str,$file,$line){
-		URLController::clean();
+		template::clean();
 		$lines = file($file);
 		template::flushData();
 		template::assign('errorNo',$no);
@@ -77,7 +77,7 @@ class error_handler {
 	 * @return void
 	 */
 	public static function DisplayError($header,$message){
-		URLController::clean();
+		template::clean();
 		template::flushData();
 		template::assign('header',$header);
 		template::assign('message',$message);

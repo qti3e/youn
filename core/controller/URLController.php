@@ -112,13 +112,6 @@ class URLController{
 		}
 	}
 
-	/**
-	 * @return void
-	 */
-	public static function clean(){
-		if (ob_get_contents()) ob_end_clean();
-	}
-
 	public function __destruct() {
 		//Display all of output at the end, so we can send new header to the client in all of running time
 	}
@@ -155,7 +148,7 @@ class URLController{
 		}else{
 			$re = controller::__callClass($class,$function,$param);
 		}
-		static::clean();
+		template::clean();
 		if(static::$json){
 			print(json_encode($re));
 		}else{
