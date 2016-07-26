@@ -21,6 +21,9 @@
 
 namespace core\auth;
 
+use core\cryptography\crypto;
+use core\database\query;
+use core\helper\variable;
 use core\session\SessionManager;
 
 /**
@@ -44,60 +47,136 @@ class AuthManager {
 		if(static::$login === null){
 			static::$login  = (SessionManager::get('youn_auth_is_login') === 'true');
 			if(static::$login){
-				static::$username   = SessionManager::get('youn_auth_login');
+				static::$username   = SessionManager::get('youn_auth_username');
 			}
 		}
 		return static::$login;
 	}
 
 	/**
-	 * @param $validator
-	 * @param $checker
+	 * @param $username
 	 *
 	 * @return void
 	 */
-	public static function login($validator,$checker){
+	protected static function _valid($username){
+		SessionManager::set('youn_auth_is_login','true');
+		SessionManager::set('youn_auth_username',$username);
+		static::$username   = $username;
+		static::$login      = true;
+	}
 
+	protected static function _invalid(){
+
+	}
+
+	/**
+	 * @param $validator
+	 *
+	 * @return mixed
+	 * @throws authException
+	 */
+	protected static function _getUsername($validator){
+		$keys   = array_keys($validator);
+		$count  = count($keys);
+		for($i  = 0;$i < $count;$i++){
+			if(preg_match('/.*user.*/',$keys[$i])){
+				return $validator[$keys[$i]];
+			}
+		}
+		throw new authException('invalidUsername');
+	}
+
+	/**
+	 * @param $data
+	 * @param $validator
+	 *
+	 * @return bool
+	 * @throws authException
+	 */
+	public static function login($data,$validator){
+		$_keys  = array_keys($validator);
+		$_count = count($validator);
+		$keys   = array_keys($data);
+		$count  = count($data);
+		for($i  = 0;$i < $count;$i++){
+			$re = true;
+			for($j  = 0;$j < $_count;$i++){
+				$re = $re && ($data[$keys[$i]] == $validator[$_keys[$j]]);
+			}
+			if($re  === true){
+				static::_valid(static::_getUsername($validator));
+				return true;
+			}
+		}
+		static::_invalid();
+		return false;
+	}
+
+	/**
+	 * @param $table
+	 * @param $validator
+	 *
+	 * @return bool
+	 */
+	public static function dbLogin($table,$validator){
+		$result = query::SELECT($table)->WHERE($validator)->execute();
+		if(count($result) > 0){
+			static::_valid(static::_getUsername($validator));
+			return true;
+		}
+		return false;
 	}
 
 	/**
 	 * @return void
 	 */
 	public static function logout(){
-
+		SessionManager::set('youn_auth_is_login','false');
+		SessionManager::remove('youn_auth_is_login');
+		SessionManager::remove('youn_auth_username');
+		static::$username   = null;
+		static::$login      = null;
 	}
 
 	/**
-	 * @return null
+	 * @return bool|string
 	 */
 	public static function getUsername(){
-		return static::$username;
+		if(self::isLogin()){
+			if(static::$username === null){
+				static::$username   = SessionManager::get('youn_auth_username');
+			}
+			return static::$username;
+		}
+		return false;
 	}
 
 	/**
-	 * @return void
-	 */
-	public static function createResetPasswordId(){
-
-	}
-
-	/**
-	 * @param $resetId
-	 * @param $oldPassword
-	 * @param $newPassword
+	 * @param     $username
+	 * @param int $expire
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public static function resetPassword($resetId,$oldPassword,$newPassword){
-
+	public static function createResetPasswordToken($username,$expire = 24){
+		$token  = variable::str_pad(';'.$username.';'.(time() + ($expire * 60 * 60)).';',64);
+		return crypto::encrypt($token);
 	}
 
 	/**
-	 * @param $resetId
+	 * @param $token
 	 *
-	 * @return void
+	 * @return bool
 	 */
-	public static function isResetPasswordValid($resetId){
-
+	public static function isResetPasswordTokenValid($token){
+		$token  = crypto::decrypt($token);
+		preg_match_all('/.*;(.+?);(.+?);.*/',$token,$matches);
+		if(count($matches) === 3){
+			$username   = $matches[1][0];
+			$expire     = $matches[2][0];
+			if($expire <= time()){
+				return $username;
+			}
+		}
+		return false;
 	}
 }
