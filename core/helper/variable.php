@@ -26,6 +26,13 @@ namespace core\helper;
  * @package core\helper
  */
 class variable {
+	/**
+	 * @param     $input
+	 * @param     $start
+	 * @param int $len
+	 *
+	 * @return array|bool|string
+	 */
 	public static function substr($input,$start,$len = 0){
 		if(is_string($input)){
 			return substr($input,$start,$len);
@@ -56,5 +63,46 @@ class variable {
 			return $ret;
 		}
 		return false;
+	}
+
+	/**
+	 * @param int $len
+	 *
+	 * @return string
+	 */
+	public static function randomString($len = 32){
+		$re         = '';
+		$alphabets  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
+		$aLen       = strlen($alphabets) - 1;
+		for($i = 0;$i < $len;$i++){
+			$re .= $alphabets[rand(0,$aLen)];
+		}
+		return $re;
+	}
+
+	/**
+	 * @param $input
+	 * @param $pad_length
+	 * @param $pad_type
+	 *
+	 * @return string
+	 */
+	public static function str_pad($input,$pad_length,$pad_type = null){
+		$len            = strlen($input);
+		if($pad_type === null){
+			$pad_length = $pad_length - $len;
+			$l          = rand() % ($pad_length - 20);
+			return static::randomString($l).$input.static::randomString($pad_length - $l);
+		}
+		$rand           = ($pad_length - $len) / 2;
+		$padString0     = static::randomString($rand);
+		$padString1     = static::randomString($rand);
+		if($pad_type === STR_PAD_LEFT){
+			return $padString0.$padString1.$input;
+		}
+		if($pad_type === STR_PAD_RIGHT){
+			return $input.$padString0.$padString1;
+		}
+		return $padString0.$input.$padString1;
 	}
 }
