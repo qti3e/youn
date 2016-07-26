@@ -21,7 +21,50 @@
 
 namespace core\cdn;
 
-
+/**
+ * Class cdns
+ * @package core\cdn
+ */
 class cdns {
+	/**
+	 * @return string
+	 */
+	public static function jQuery(){
+		return '<script src="https://code.jquery.com/jquery-3.1.0.min.js" type="application/javascript"></script>';
+	}
 
+	/**
+	 * @return string
+	 */
+	public static function bootstrapCSS(){
+		return '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function bootstrapJS(){
+		return '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function react(){
+		return '<script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/15.2.1/react.min.js"></script>';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function vue(){
+		return '<script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function impress(){
+		return '<script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/impress.js/0.5.3/impress.min.js"></script>';
+	}
 }
