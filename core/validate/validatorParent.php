@@ -22,26 +22,28 @@
 namespace core\validate;
 
 /**
- * Class validator
+ * Class validatorParent
  * @package core\validate
  */
-class validator {
+class validatorParent implements validatorInterface{
 	/**
-	 * @param                    $input
-	 * @param validatorInterface $validator
-	 *
-	 * @return bool
+	 * @var string
 	 */
-	public static function validate($input,validatorInterface $validator){
-		if(is_array($input)){
-			$re     = true;
-			$keys   = array_keys($input);
-			$count  = count($input);
-			for($i  = 0;$i < $count;$i++){
-				$re &= static::validate($input[$keys[$i]],$validator);
-			}
-			return $re;
-		}
-		return $validator->is_valid($input);
+	protected $pattern  = '';
+
+	/**
+	 * @return string
+	 */
+	public function get_pattern() {
+		return $this->pattern;
+	}
+
+	/**
+	 * @param $input
+	 *
+	 * @return int
+	 */
+	public function is_valid($input) {
+		return preg_match($this->get_pattern(),$input);
 	}
 }

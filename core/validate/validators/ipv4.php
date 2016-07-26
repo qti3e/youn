@@ -22,8 +22,15 @@
 namespace core\validate\validators;
 
 
-use core\validate\validatorInterface;
+use core\validate\validatorParent;
 
-class ipv4 implements validatorInterface{
-
+/**
+ * Class ipv4
+ * @package core\validate\validators
+ */
+class ipv4 extends validatorParent{
+	/**
+	 * @var string
+	 */
+	protected $pattern  = '/^[1-9]{3}\.[1-9]{1,3}\.[1-9]{1,3}\.[1-9]{1,3}$/';
 }

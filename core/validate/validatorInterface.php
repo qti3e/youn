@@ -21,7 +21,20 @@
 
 namespace core\validate;
 
-
+/**
+ * Interface validatorInterface
+ * @package core\validate
+ */
 interface validatorInterface {
+	/**
+	 * @param $input
+	 *
+	 * @return mixed
+	 */
+	public function is_valid($input);
 
+	/**
+	 * @return mixed
+	 */
+	public function get_pattern();
 }
