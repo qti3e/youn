@@ -24,6 +24,38 @@ namespace core\validate\validators;
 
 use core\validate\validatorInterface;
 
+/**
+ * Class custom
+ * @package core\validate\validators
+ */
 class custom implements validatorInterface{
+	/**
+	 * @var string
+	 */
+	protected $pattern  = '';
 
+	/**
+	 * custom constructor.
+	 *
+	 * @param $pattern
+	 */
+	public function __construct($pattern) {
+		$this->pattern  = $pattern;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_pattern() {
+		return $this->pattern;
+	}
+
+	/**
+	 * @param $input
+	 *
+	 * @return bool
+	 */
+	public function is_valid($input) {
+		return preg_match($this->pattern,$input);
+	}
 }
