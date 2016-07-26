@@ -28,6 +28,11 @@ namespace core\http;
  */
 class http {
 	/**
+	 * @var array
+	 */
+	protected static $headers   = [];
+
+	/**
 	 * @return mixed
 	 */
 	public static function getUserIP(){
@@ -39,5 +44,50 @@ class http {
 			return $_SERVER['REMOTE_ADDR'];
 		}
 		return false;
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function sendHeaders(){
+		$keys   = array_keys(static::$headers);
+		$count  = count($keys);
+		for($i  = 0;$i < $count;$i++){
+			header($keys[$i].': '.static::$headers[$keys[$i]]);
+		}
+	}
+
+	/**
+	 * @param $key
+	 * @param $value
+	 *
+	 * @return void
+	 */
+	public static function header($key,$value){
+		static::$headers[trim($key)]    = trim($value);
+	}
+
+	/**
+	 * @param string $key
+	 *
+	 * @return bool|string
+	 */
+	public static function removeHeader($key){
+		$key    = trim($key);
+		if(isset(static::$headers[$key])){
+			$re = static::$headers[$key];
+			unset(static::$headers[$key]);
+			return $re;
+		}
+		return false;
+	}
+
+	/**
+	 * @param $key
+	 *
+	 * @return bool
+	 */
+	public static function issetHeader($key){
+		return isset(static::$headers[trim($key)]);
 	}
 }

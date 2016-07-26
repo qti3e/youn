@@ -25,6 +25,7 @@ namespace core\controller;
 use application\controller;
 use core\database\query;
 use core\exception\error_handler;
+use core\http\http;
 use core\session\SessionManager;
 use core\view\template;
 
@@ -114,19 +115,7 @@ class URLController{
 
 	public function __destruct() {
 		//Display all of output at the end, so we can send new header to the client in all of running time
-	}
-
-	/**
-	 * @param $key
-	 * @param $value
-	 *
-	 * @return void
-	 */
-	public static function header($key,$value){
-		/**
-		 * TODO: save headers to an array and send headers at the end, so we can have a new function called destroyHeader that remove headers!
-		 */
-		header(trim($key).' : '.trim($value).';');
+		http::sendHeaders();
 	}
 
 	/**
@@ -150,7 +139,11 @@ class URLController{
 		}
 		template::clean();
 		if(static::$json){
-			print(json_encode($re));
+			if(is_array($re)){
+				print(json_encode($re));
+			}else{
+				print($re);
+			}
 		}else{
 			$template = new template();
 			if(is_array($re)){
