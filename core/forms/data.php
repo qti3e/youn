@@ -21,7 +21,110 @@
 
 namespace core\forms;
 
+use core\exception\youn_exception;
+use core\validate\validatorInterface;
 
+/**
+ * Class data
+ * @package core\forms
+ */
 class data {
+	/**
+	 * @param                         $name
+	 * @param validatorInterface|null $validator
+	 *
+	 * @return bool
+	 */
+	public static function get($name,validatorInterface $validator = null){
+		if(isset($_GET[$name])){
+			if($validator !== null){
+				if(!$validator->is_valid($_GET[$name])){
+					return false;
+				}
+			}
+			return $_GET[$name];
+		}
+		return false;
+	}
 
+	/**
+	 * @param                         $name
+	 * @param validatorInterface|null $validator
+	 *
+	 * @return bool
+	 */
+	public static function post($name,validatorInterface $validator = null){
+		if(isset($_POST[$name])){
+			if($validator !== null){
+				if(!$validator->is_valid($_POST[$name])){
+					return false;
+				}
+			}
+			return $_GET[$name];
+		}
+		return false;
+	}
+
+	/**
+	 * @param                         $name
+	 * @param validatorInterface|null $validator
+	 *
+	 * @return void
+	 */
+	public static function file($name,validatorInterface $validator = null){
+
+	}
+
+	/**
+	 * @param array     $data
+	 * @param callable  $function
+	 *
+	 * @return array
+	 * @throws youn_exception
+	 */
+	protected static function _loop($data,$function){
+		if(!is_callable($function)){
+			throw new youn_exception('','Second parameter of loop function must be callable.');
+		}
+		$keys   = array_keys($data);
+		$count  = count($data);
+		for($i  = 0;$i < $count;$i++){
+			$data[$keys[$i]]    = $function($keys[$i],$data[$keys[$i]]);
+		}
+		return $data;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getKeys(){
+		return array_keys($_GET);
+	}
+
+	/**
+	 * @param $function
+	 *
+	 * @return array
+	 * @throws youn_exception
+	 */
+	public static function getLoop($function){
+		return static::_loop($_GET,$function);
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function postKey(){
+		return array_keys($_POST);
+	}
+
+	/**
+	 * @param $function
+	 *
+	 * @return array
+	 * @throws youn_exception
+	 */
+	public static function postLoop($function){
+		return static::_loop($_POST,$function);
+	}
 }

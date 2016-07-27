@@ -21,7 +21,17 @@
 
 namespace core\bootstrap;
 
-
+/**
+ * Class bootstrap
+ * @package core\bootstrap
+ */
 class bootstrap {
+	/**
+	 * @param $data
+	 *
+	 * @return void
+	 */
+	public static function table($data){
 
+	}
 }

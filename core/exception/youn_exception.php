@@ -21,6 +21,8 @@
 
 namespace core\exception;
 
+use core\log\writer;
+
 /**
  * Class youn_exception
  * @package core\exception
@@ -39,12 +41,14 @@ class youn_exception extends \Exception{
 		if(method_exists($this,$function)){
 			$this->$function($message,$code);
 		}
+		$this->log();
 	}
 
 	/**
 	 * @return void
 	 */
 	public function log(){
-		//TODO write it after complete log\writer
+		writer::log($this->code."\t".$this->message."\t".$this->getFile().':'.$this->getLine());
+		writer::writeToFile();
 	}
 }

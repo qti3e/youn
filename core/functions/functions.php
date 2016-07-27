@@ -18,102 +18,79 @@
  *                             Created by  Qti3e                             *
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
-
-namespace core\filesystem;
+/**
+ * Include header file (use in template files)
+ * @return void
+ */
+function header(){
+	include "header.php";
+}
 
 /**
- * Class directory
- * @package core\filesystem
+ * Include footer file (user in template files)
+ * @return void
  */
-class directory {
-	/**
-	 * @param      $directory
-	 * @param null $death //TODO:Spell check
-	 *
-	 * @return void
-	 */
-	public static function map($directory,$death = null){
+function footer(){
+	include "footer.php";
+}
 
-	}
+/**
+ * Return link of special page with token id included
+ * @param $page_name
+ *  Page name
+ * @param $token_key
+ *  Token id key for get
+ * @return string
+ *
+ */
+function token($page_name,$token_key = 'token'){
+	return base_url.'/'.$page_name.'?'.$token_key.'='.\core\token\token::create($page_name);
+}
 
-	/**
-	 * @param $dir
-	 *
-	 * @return void
-	 */
-	public static function exists($dir){
+/**
+ * @param $name
+ *
+ * @return string
+ */
+function lang($name){
+	return \core\i18n\lang::get($name);
+}
 
-	}
+/**
+ * @param $name
+ *
+ * @return string
+ */
+function i18n($name){
+	return \core\i18n\lang::get($name);
+}
 
-	/**
-	 * @param $dir
-	 *
-	 * @return void
-	 */
-	public static function mk($dir){
+/**
+ * @return string
+ */
+function templateURL(){
+	return base_url.'/application/templates/';
+}
 
-	}
+//TODO:
+function form_open($attributes){
 
-	/**
-	 * @param $dir
-	 *
-	 * @return void
-	 */
-	public static function rm($dir){
+}
+function form_close(){
+	echo '</form>';
+}
+function captcha_image($name){
 
-	}
+}
+function captcha_input($name){
 
-	/**
-	 * @param $dir
-	 * @param $path
-	 *
-	 * @return void
-	 */
-	public static function copy($dir,$path){
+}
+function captcha_name($name){
 
-	}
+}
+function md(){
 
-	/**
-	 * @param $dir
-	 * @param $path
-	 *
-	 * @return void
-	 */
-	public static function cut($dir,$path){
+}
+function markdown(){
 
-	}
-
-	/**
-	 * @param $dir
-	 *
-	 * @return void
-	 */
-	public static function clear($dir){
-
-	}
-
-	/**
-	 * @param $dir
-	 *
-	 * @return void
-	 */
-	public static function getFilesList($dir){
-
-	}
-
-	/**
-	 * @param $dir
-	 *
-	 * @return void
-	 */
-	public static function getDirsList($dir){
-
-	}
-
-	/**
-	 * @return void
-	 */
-	public static function getContentList() {
-
-	}
 }

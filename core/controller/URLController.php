@@ -42,6 +42,10 @@ class URLController{
 	 * @var bool
 	 */
 	private static $json    = false;
+	/**
+	 * @var null
+	 */
+	private static $include_path    = null;
 
 	/**
 	 * @param $class
@@ -49,7 +53,7 @@ class URLController{
 	 * @return void
 	 */
 	public function autoLoad($class){
-		$file   = str_replace('\\','/',$class).'.php';
+		$file   = str_replace('\\','/',static::$include_path.$class).'.php';
 		if(file_exists($file)){
 			include_once($file);
 		}
@@ -62,7 +66,8 @@ class URLController{
 		//Display all of error
 		error_reporting(E_ALL);
 		//Set include path to the script's root directory
-		set_include_path(__DIR__);
+		set_include_path(__DIR__.'/../../');
+		static::$include_path   = get_include_path();
 		//Autoload is way to auto include files when a class called
 		spl_autoload_register([$this,'autoLoad']);
 		//Handle all of errors with our own error handler

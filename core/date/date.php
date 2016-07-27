@@ -23,5 +23,119 @@ namespace core\date;
 
 
 class date {
+	/**
+	 * @param $string
+	 *
+	 * @return int
+	 */
+	public static function str2time($string){
+		return strtotime($string);
+	}
+
+	/**
+	 * @param $date
+	 * @param $new_format
+	 *
+	 * @return bool|string
+	 */
+	public static function changeFormat($date,$new_format){
+		return date($new_format,strtotime($date));
+	}
+
+	/**
+	 * @param $month
+	 * @param $day
+	 * @param $year
+	 *
+	 * @return bool
+	 */
+	public static function checkDate($month,$day = null,$year = null){
+		if($day === null){
+			$day    = (int)date('d');
+		}
+		if($year === null){
+			$year   = (int)date('y');
+		}
+		return checkdate($month,$day,$year);
+	}
+
+	/**
+	 * @param      $format
+	 * @param null $date
+	 *
+	 * @return bool|string
+	 */
+	protected static function _get($format,$date = null){
+		if($date   === null){
+			$date  = time();
+		}elseif(is_string($date)){
+			$date  = static::str2time($date);
+		}
+		return date($format,$date);
+	}
+
+	/**
+	 * @param null $date
+	 *
+	 * @return bool|string
+	 */
+	public static function getYear($date = null){
+		return static::_get('y', $date);
+	}
+
+	/**
+	 * @param null $date
+	 *
+	 * @return bool|string
+	 */
+	public static function getMonth($date = null){
+		return static::_get('m', $date);
+	}
+
+	/**
+	 * @param null $date
+	 *
+	 * @return bool|string
+	 */
+	public static function getDay($date = null){
+		return static::_get('d', $date);
+	}
+
+	/**
+	 * @param null $date
+	 *
+	 * @return bool|string
+	 */
+	public static function getHour($date = null){
+		return static::_get('h', $date);
+	}
+
+	/**
+	 * @param null $date
+	 *
+	 * @return bool|string
+	 */
+	public static function getMin($date = null){
+		return static::_get('i', $date);
+	}
+
+	/**
+	 * @param null $date
+	 *
+	 * @return bool|string
+	 */
+	public static function getSecond($date = null){
+		return static::_get('s', $date);
+	}
+
+	/**
+	 * @param null $date
+	 *
+	 * @return bool|string
+	 */
+	public static function standard($date = null){
+		return static::_get('D, d M Y H:i:s',$date);
+	}
+
 
 }

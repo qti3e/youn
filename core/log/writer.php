@@ -21,7 +21,52 @@
 
 namespace core\log;
 
-
+/**
+ * Class writer
+ * @package core\log
+ */
 class writer {
+	/**
+	 * @var string
+	 */
+	protected static $log = 'Youn log:';
 
+	/**
+	 * @param $message
+	 *
+	 * @return void
+	 */
+	public static function log($message){
+		static::$log    .= "\n".date('d/m/y H:i:s')."\t$message";
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function clear(){
+		static::$log    = 'Youn log:';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function get(){
+		return static::$log;
+	}
+
+	/**
+	 * @param null $file
+	 *
+	 * @return bool|int
+	 */
+	public static function writeToFile($file = null){
+		if($file === null){
+			$file   = 'youn_log.log';
+		}
+		$before = '';
+		if(file_exists($file)){
+			$before = file_get_contents($file)."\n_____________________________\n";
+		}
+		return file_put_contents($before.$file,static::$log);
+	}
 }
