@@ -21,8 +21,6 @@
 
 namespace core\cookie;
 
-use core\database\KeyValueStore;
-
 /**
  * Class CookieManager
  * Session manager

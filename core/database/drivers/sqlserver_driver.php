@@ -22,6 +22,81 @@
 namespace core\database\drivers;
 
 
-class sqlserver_driver {
+use core\database\driver;
 
+/**
+ * Class sqlserver_driver
+ * @package core\database\drivers
+ */
+class sqlserver_driver implements driver{
+	/**
+	 * @var false|resource
+	 */
+	protected $object;
+	/**
+	 * @var bool
+	 */
+	protected $error    = false;
+	/**
+	 * @var array|null|string
+	 */
+	protected $errorD   = '';
+
+	/**
+	 * sqlserver_driver constructor.
+	 */
+	public function __construct() {
+		$serverName = db_host.", ".db_port;
+		$info       = [
+			'Database'  => db_name,
+			'UID'       => db_user,
+			'PWD'       => db_pass
+		];
+		$this->object   = sqlsrv_connect($serverName,$info);
+		if(!$this->object){
+			$this->error    = true;
+			$this->errorD   = sqlsrv_errors();
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isError() {
+		return $this->error;
+	}
+
+	/**
+	 * @return false|resource
+	 */
+	public function getObject() {
+		return $this->object;
+	}
+
+	/**
+	 * @return array|null|string
+	 */
+	public function getErrorDetail() {
+		return $this->errorD;
+	}
+
+	/**
+	 * @return void
+	 */
+	public function close() {
+		sqlsrv_close($this->object);
+	}
+
+	/**
+	 * @param $query
+	 *
+	 * @return array|bool|false|null
+	 */
+	public function query($query) {
+		$stmt   = sqlsrv_query($this->object,$query);
+		if($stmt === false){
+			return false;
+		}
+		return sqlsrv_fetch_array($stmt);
+	}
 }

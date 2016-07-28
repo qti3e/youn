@@ -22,6 +22,71 @@
 namespace core\database\drivers;
 
 
-class postgre_driver {
+use core\database\driver;
 
+/**
+ * Class postgre_driver
+ * @package core\database\drivers
+ */
+class postgre_driver implements driver{
+	/**
+	 * @var resource
+	 */
+	protected $object;
+	/**
+	 * @var bool
+	 */
+	protected $error    = false;
+
+	/**
+	 * postgre_driver constructor.
+	 */
+	public function __construct() {
+		$dsn    = "host=".db_host." port=".db_port." dbname=".db_name." user=".db_user." password=".db_pass."options='--client_encoding=".db_charset."'";
+		$this->object   = pg_connect($dsn);
+		if(!$this->object){
+			$this->error = true;
+		}
+	}
+
+	/**
+	 * @param $query
+	 *
+	 * @return array|bool
+	 */
+	public function query($query) {
+		$result =  pg_query($this->object,$query);
+		if(!$result){
+			return false;
+		}
+		return pg_fetch_array($_REQUEST);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function close() {
+		pg_close($this->object);
+	}
+
+	/**
+	 * @return resource
+	 */
+	public function getObject() {
+		return $this->object;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isError() {
+		return $this->error;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getErrorDetail() {
+		return '';
+	}
 }

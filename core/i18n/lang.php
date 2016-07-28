@@ -49,13 +49,18 @@ class lang {
 	/**
 	 * @param $langCode
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public static function load($langCode){
+		if(file_exists('application/langs/'.$langCode.'.php')){
+			static::$lang = include('application/langs/'.$langCode.'.php');
+		}
 		if(file_exists('core/i18n/langs/'.$langCode.'.php')){
 			static::$lang = include 'core/i18n/langs/'.$langCode.'.php';
+			return true;
 		}
 		error_handler::DisplayError('Can\'t load language file','Can not find "core/i18n/langs/'.$langCode.'.php"');
+		return false;
 	}
 
 	/**

@@ -75,3 +75,13 @@ define('base_url','');
  *  Note: Don't translate keys of array
  */
 define('lang','en');
+
+/**
+ * Default mailer library sender address.
+ */
+define('mail_from','noreplay@example.com');
+
+/**
+ * Default name of mailer sender
+ */
+define('mail_from_name','Noreplay');

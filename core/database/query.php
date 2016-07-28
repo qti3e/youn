@@ -23,6 +23,9 @@ namespace core\database;
 
 use core\database\drivers\mysqli_driver;
 use core\database\drivers\pdo_driver;
+use core\database\drivers\postgre_driver;
+use core\database\drivers\sqlite_driver;
+use core\database\drivers\sqlserver_driver;
 use core\database\query\where;
 use core\exception\youn_exception;
 
@@ -61,6 +64,15 @@ class query {
 				break;
 			case 'pdo':
 				static::$driver = new pdo_driver();
+				break;
+			case 'postgre':
+				static::$driver = new postgre_driver();
+				break;
+			case 'sqlite':
+				static::$driver = new sqlite_driver();
+				break;
+			case 'sqlserver':
+				static::$driver = new sqlserver_driver();
 				break;
 			default:
 				if(function_exists('mysqli_connect')){

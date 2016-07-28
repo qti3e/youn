@@ -19,58 +19,22 @@
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
 
-namespace core\database\drivers;
+namespace core\mailer;
 
 
-use core\database\driver;
+use core\exception\youn_exception;
 
 /**
- * Class sqlite_driver
- * @package core\database\drivers
+ * Class mailerException
+ * @package core\mailer
  */
-class sqlite_driver implements driver{
+class mailerException extends youn_exception{
 	/**
-	 * @var \SQLite3
-	 */
-	protected $object;
-
-	/**
-	 * sqlite_driver constructor.
-	 */
-	public function __construct() {
-		$this->object   = new \SQLite3(db_name,null,db_pass);
-	}
-
-	/**
-	 * @return void
-	 */
-	public function close() {
-		$this->object->close();
-	}
-
-	/**
-	 * @return void
-	 */
-	public function getErrorDetail() {}
-
-	/**
-	 * @return void
-	 */
-	public function isError() {}
-
-	/**
-	 * @return \SQLite3
-	 */
-	public function getObject() {
-		return $this->object;
-	}
-
-	/**
-	 * @param $query
+	 * @param $mail
 	 *
-	 * @return array
+	 * @return void
 	 */
-	public function query($query) {
-		return $this->object->query($query)->fetchArray();
+	public function unValidMailAddress($mail){
+		$this->message  = "Illegal mail address \"$mail\"";
 	}
 }
