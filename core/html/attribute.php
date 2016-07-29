@@ -270,4 +270,15 @@ class attribute {
 		$this->attributes   = [];
 		return $this;
 	}
+
+	/**
+	 * @param $newText
+	 *
+	 * @return string
+	 */
+	public function _changeText($newText){
+		$re         = $this->text;
+		$this->text = $newText;
+		return $re;
+	}
 }
