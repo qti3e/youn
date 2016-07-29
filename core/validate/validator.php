@@ -21,6 +21,11 @@
 
 namespace core\validate;
 
+use core\validate\validators\email;
+use core\validate\validators\ipv4;
+use core\validate\validators\ipv6;
+use core\validate\validators\username;
+
 /**
  * Class validator
  * @package core\validate
@@ -43,5 +48,41 @@ class validator {
 			return $re;
 		}
 		return $validator->is_valid($input);
+	}
+
+	/**
+	 * @param $input
+	 *
+	 * @return bool
+	 */
+	public static function email($input){
+		return static::validate($input,new email());
+	}
+
+	/**
+	 * @param $input
+	 *
+	 * @return bool
+	 */
+	public static function ipv4($input){
+		return static::validate($input,new ipv4());
+	}
+
+	/**
+	 * @param $input
+	 *
+	 * @return bool
+	 */
+	public static function ipv6($input){
+		return static::validate($input,new ipv6());
+	}
+
+	/**
+	 * @param $input
+	 *
+	 * @return bool
+	 */
+	public static function username($input){
+		return static::validate($input,new username());
 	}
 }
