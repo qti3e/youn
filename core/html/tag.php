@@ -491,7 +491,7 @@ class tag {
 	public static function param($name,$value){
 		return (new attribute('param',false))->name($name)->value($value);
 	}
-//todo continue after sleep
+
 	/**
 	 * @param string $text
 	 *
