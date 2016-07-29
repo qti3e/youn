@@ -23,5 +23,6 @@ namespace core\forms;
 
 
 class builder {
-
+	public function __construct() {
+	}
 }

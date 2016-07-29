@@ -230,6 +230,15 @@ class mailer {
 	}
 
 	/**
+	 * @param $file
+	 *
+	 * @return void
+	 */
+	public function setTemplateFromFile($file){
+		$this->template = file_get_contents($file);
+	}
+
+	/**
 	 * @param $name
 	 * @param $value
 	 *
@@ -323,8 +332,24 @@ class mailer {
 		return $headers;
 	}
 
-	protected function _templateCompile(){
-		
+	/**
+	 * @return mixed
+	 */
+	protected function _compileTemplate(){
+		return preg_replace_callback('/\{\{(\w+?)\}\}/',function($matches){
+			if(isset($this->values[$matches[1]])){
+				return $this->values[$matches[1]];
+			}
+			return '';
+		},$this->template);
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function send(){
+		$to = implode(', ',array_keys($this->to));
+		return mail($to,$this->subject,$this->_compileTemplate(),$this->_header());
+	}
 }
+//TODO add mime supports

@@ -21,8 +21,34 @@
 
 namespace core\date;
 
+/**
+ * Class date
+ * @package core\date
+ */
+class date{
+	const ATOM = 'Y-m-d\TH:i:sP';
+	const COOKIE = 'l, d-M-y H:i:s T';
+	const ISO8601 = 'Y-m-d\TH:i:sO';
+	const RFC822 = 'D, d M y H:i:s O';
+	const RFC850 = 'l, d-M-y H:i:s T';
+	const RFC1036 = 'D, d M y H:i:s O';
+	const RFC1123 = 'D, d M Y H:i:s O';
+	const RFC2822 = 'D, d M Y H:i:s O';
+	const RFC3339 = 'Y-m-d\TH:i:sP';
+	const RSS = 'D, d M Y H:i:s O';
+	const W3C = 'Y-m-d\TH:i:sP';
+	/**
+	 * @var
+	 */
+	protected static $error;
 
-class date {
+	/**
+	 * @return mixed
+	 */
+	public static function getLastError(){
+		return static::$error;
+	}
+
 	/**
 	 * @param $string
 	 *
@@ -137,5 +163,176 @@ class date {
 		return static::_get('D, d M Y H:i:s',$date);
 	}
 
+	/**
+	 * Format: "Y-m-d\TH:i:sO"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function iso8601($timestamp = null){
+		return static::_get(static::ISO8601,$timestamp);
+	}
 
+	/**
+	 * Format: "D, d M y H:i:s O"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function rfc822($timestamp = null){
+		return static::_get(static::RFC822,$timestamp);
+	}
+
+	/**
+	 * Format: "l, d-M-y H:i:s T"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function rfc850($timestamp = null){
+		return static::_get(static::RFC850,$timestamp);
+	}
+
+	/**
+	 * Format: "D, d M y H:i:s O"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function rfc1036($timestamp = null){
+		return static::_get(static::RFC1036,$timestamp);
+	}
+
+	/**
+	 * Format: "D, d M Y H:i:s O"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function rfc1123($timestamp = null){
+		return static::_get(static::RFC1123,$timestamp);
+	}
+
+	/**
+	 * Format: "D, d M Y H:i:s O"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function rfc2822($timestamp = null){
+		return static::_get(static::RFC2822,$timestamp);
+	}
+
+	/**
+	 * Format: "Y-m-d\TH:i:sP"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function rfc3339($timestamp = null){
+		return static::_get(static::RFC3339,$timestamp);
+	}
+
+	/**
+	 * Same as RFC1123 and RFC2822
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function rss($timestamp = null) {
+		return static::_get(static::RSS,$timestamp);
+	}
+
+	/**
+	 * Same as RFC3339
+	 * Format: "Y-m-d\TH:i:sP"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function w3c($timestamp = null){
+		return static::_get(static::W3C,$timestamp);
+	}
+
+	/**
+	 * Same as RFC339 and W3C
+	 * Format: "Y-m-d\TH:i:sP"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function atom($timestamp = null){
+		return static::_get(static::ATOM,$timestamp);
+	}
+
+	/**
+	 * Same as RFC850
+	 * Format: "l, d-M-Y H:i:s T"
+	 * @param null $timestamp
+	 *
+	 * @return bool|string
+	 */
+	public static function cookie($timestamp = null){
+		return static::_get(static::COOKIE,$timestamp);
+	}
+
+	/**
+	 * @param               $time1
+	 * @param \DateInterval $time2
+	 * @param null          $format
+	 *
+	 * @return string
+	 */
+	public static function add($time1,\DateInterval $time2,$format = null){
+		$date   = new \DateTime($time1);
+		$re     = $date->add($time2);
+		if($re){
+			if($format === null){
+				$format = static::W3C;
+			}
+			return $date->format($format);
+		}else{
+			static::$error = $date->getLastErrors();
+			return -1;
+		}
+	}
+
+	/**
+	 * @param      $date
+	 * @param      $modify
+	 * @param null $format
+	 *
+	 * @return int|string
+	 */
+	public static function modify($date,$modify,$format = null){
+		$date   = new \DateTime($date);
+		$re     = $date->modify($modify);
+		if($re){
+			if($format === null){
+				$format = static::W3C;
+			}
+			return $date->format($format);
+		}else{
+			static::$error  = $date->getLastErrors();
+			return -1;
+		}
+	}
+
+	/**
+	 * @param        $date1
+	 * @param        $date2
+	 * @param string $format
+	 *
+	 * @return int|string
+	 */
+	public static function diff($date1,$date2,$format = '%R%s'){
+		$date   = new \DateTime($date1);
+		$re     = $date->diff($date2);
+		if($re){
+			return $re->format($format);
+		}else{
+			static::$error  = $date->getLastErrors();
+			return -1;
+		}
+	}
 }
