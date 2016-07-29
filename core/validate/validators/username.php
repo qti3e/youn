@@ -19,9 +19,19 @@
  *        <http://Qti3e.Github.io>    LO-VE    <Qti3eQti3e@Gmail.com>        *
  *****************************************************************************/
 
-namespace core\html;
+namespace core\validate\validators;
 
 
-interface tagInterface {
+use core\validate\validatorParent;
 
+/**
+ * Class username
+ * @package core\validate\validators
+ */
+class username extends validatorParent{
+	/**
+	 * minimum 5 character and maximum 13 character and it must start with one of english alphabets
+	 * @var string
+	 */
+	protected $pattern  = '/[a-zA-Z]\w{4,12}/';
 }
