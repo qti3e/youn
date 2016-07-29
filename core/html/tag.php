@@ -1051,12 +1051,10 @@ class tag {
 	}
 
 	/**
-	 * @param string $text
-	 *
 	 * @return attribute
 	 */
-	public static function basefont($text = ''){
-		return new attribute('basefont',true,$text);
+	public static function basefont(){
+		return new attribute('basefont',false);
 	}
 
 	/**
@@ -1087,12 +1085,10 @@ class tag {
 	}
 
 	/**
-	 * @param string $text
-	 *
 	 * @return attribute
 	 */
-	public static function command($text = ''){
-		return new attribute('command',true,$text);
+	public static function command(){
+		return new attribute('command',false);
 	}
 
 	/**
@@ -1123,12 +1119,12 @@ class tag {
 	}
 
 	/**
-	 * @param string $text
+	 * @param string $src
 	 *
 	 * @return attribute
 	 */
-	public static function frame($text = ''){
-		return new attribute('frame',true,$text);
+	public static function frame($src = ''){
+		return (new attribute('frame',false))->src($src);
 	}
 
 	/**
@@ -1150,12 +1146,10 @@ class tag {
 	}
 
 	/**
-	 * @param string $text
-	 *
 	 * @return attribute
 	 */
-	public static function isindex($text = ''){
-		return new attribute('isindex',true,$text);
+	public static function isindex(){
+		return new attribute('isindex',false);
 	}
 
 	/**
@@ -1186,12 +1180,10 @@ class tag {
 	}
 
 	/**
-	 * @param string $text
-	 *
 	 * @return attribute
 	 */
-	public static function nextid($text = ''){
-		return new attribute('nextid',true,$text);
+	public static function nextid(){
+		return new attribute('nextid',false);
 	}
 
 	/**
@@ -1213,12 +1205,12 @@ class tag {
 	}
 
 	/**
-	 * @param string $text
+	 * @param int $size
 	 *
 	 * @return attribute
 	 */
-	public static function spacer($text = ''){
-		return new attribute('spacer',true,$text);
+	public static function spacer($size = 10){
+		return (new attribute('spacer',false))->size($size);
 	}
 
 	/**
