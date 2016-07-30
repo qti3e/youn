@@ -30,6 +30,10 @@ use core\validate\validatorInterface;
  */
 class data {
 	/**
+	 * @var
+	 */
+	protected static $file;
+	/**
 	 * @param                         $name
 	 * @param validatorInterface|null $validator
 	 *
@@ -66,13 +70,65 @@ class data {
 	}
 
 	/**
-	 * @param                         $name
-	 * @param validatorInterface|null $validator
+	 * @param $name
+	 * @param $handler
 	 *
-	 * @return void
+	 * @return bool|int
+	 * @throws formException
 	 */
-	public static function file($name,validatorInterface $validator = null){
-//todo write it
+	public static function file($name,$handler){
+		if(!isset($_FILES[$name])){
+			return false;
+		}
+		if(!is_callable($handler)){
+			throw new formException('','Second argument must be callable');
+		}
+		$file   = $_FILES[$name];
+		$re     = 0;
+		if(is_array($file['name'])){
+			$keys   = array_keys($file['error']);
+			$count  = count($file['error']);
+			for($i  = 0;$i < $count;$i++){
+			    $key= $keys[$i];
+			    $val= $file['error'][$key];
+			    if($val === 0){
+				    $info   = [
+					    'name'      => $file['name'][$key],
+					    'type'      => $file['type'][$key],
+					    'tmp_name'  => $file['tmp_name'][$key],
+					    'error'     => $file['tmp_name'][$key],
+					    'size'      => $file['size'][$key]
+				    ];
+				    static::$file   = $info;
+				    if($handler($info)){
+					    $re++;
+				    }
+				    static::$file   = null;
+			    }
+			}
+		}else{
+			if($file['error'] !== 0){
+				static::$file   = $file;
+				if($handler($file)){
+					$re++;
+				};
+				static::$file   = null;
+			}
+		}
+		return $re;
+	}
+
+	/**
+	 * @param $file
+	 *
+	 * @return bool
+	 * @throws formException
+	 */
+	public static function move_file($file){
+		if(static::$file === null){
+			throw new formException('','You can\'t call data::move_file out side of handler function for data::file');
+		}
+		return move_uploaded_file(static::$file['tmp_name'],$file);
 	}
 
 	/**
