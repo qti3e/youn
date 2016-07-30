@@ -144,7 +144,7 @@ namespace core\html;
  * @method attribute width($value = null)
  * @method attribute wrap($value = null)
  */
-class attribute {
+class attribute{
 	/**
 	 * @var string
 	 */
@@ -278,7 +278,7 @@ class attribute {
 	 */
 	public function _changeText($newText){
 		$re         = $this->text;
-		$this->text = $newText;
+		$this->text = (string)$newText;
 		return $re;
 	}
 }
