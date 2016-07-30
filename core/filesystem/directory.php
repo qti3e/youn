@@ -28,11 +28,11 @@ namespace core\filesystem;
 class directory {
 	/**
 	 * @param      $directory
-	 * @param null $death //TODO:Spell check
+	 * @param null $depth
 	 *
 	 * @return void
 	 */
-	public static function map($directory,$death = null){
+	public static function map($directory,$depth = null){
 
 	}
 
