@@ -30,7 +30,7 @@ class cryptography {
 	/**
 	 * @var string
 	 */
-	protected static $key       = '';
+	protected static $key       = crypto_key;
 	/**
 	 * @var int
 	 */
