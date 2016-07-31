@@ -34,10 +34,6 @@ class crypto extends cryptography{
 	 */
 	protected static $on    = true;
 	/**
-	 * @var string
-	 */
-	protected static $key   = '';
-	/**
 	 * @var int
 	 */
 	protected static $len   = 0;
