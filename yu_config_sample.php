@@ -85,3 +85,8 @@ define('mail_from','noreplay@example.com');
  * Default name of mailer sender
  */
 define('mail_from_name','Noreplay');
+/**
+ * Crypto special key
+ * Change it!
+ */
+define('crypto_key','fqGycWCD1)Af$sD77qbGuavERu1VKnxLwBV(7a2xr4gSD56jSZv@RY0kXDL)S-4XXk+lX-p%$o)1e^ufM60$b+rM#kH%9IyFkPHaYS8eVs)I@X&XPKqOS%^LoMLHlNb85RcK7!N@N(f@3dY$2!$9uF0iWMYWUq@!Kr3QcZCvOrx#6eP0c7W3gSTAqj-JqP7JALRwEmAyZnZK(0PlIDPucDWq*CE&(L$4zEOW&uIa)3n3q)0saSQGg9914t_+7feW');
