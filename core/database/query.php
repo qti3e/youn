@@ -58,31 +58,7 @@ class query {
 	 * query constructor.
 	 */
 	public function __construct() {
-		switch(strtolower(db_driver)){
-			case 'mysqli':
-				static::$driver = new mysqli_driver();
-				break;
-			case 'pdo':
-				static::$driver = new pdo_driver();
-				break;
-			case 'postgre':
-				static::$driver = new postgre_driver();
-				break;
-			case 'sqlite':
-				static::$driver = new sqlite_driver();
-				break;
-			case 'sqlserver':
-				static::$driver = new sqlserver_driver();
-				break;
-			default:
-				if(function_exists('mysqli_connect')){
-					static::$driver = new mysqli_driver();
-				}elseif(extension_loaded('pdo')){
-					static::$driver = new pdo_driver();
-				}else{
-					throw new youn_exception('Can\'t load application because both of pdo and mysqli are disabled');
-				}
-		}
+		static::$driver = new mysqli_driver();
 	}
 
 	/**
@@ -101,6 +77,9 @@ class query {
 	 * @return mixed
 	 */
 	protected static function RES_array($array){
+		if(is_string($array)){
+			return static::RES($array);
+		}
 		$keys   = array_keys($array);
 		$count  = count($array);
 		for($i  = 0;$i < $count;$i++){
@@ -110,20 +89,22 @@ class query {
 	}
 
 	/**
-	 * @param $string
+	 * @param        $string
+	 * @param string $str
 	 *
 	 * @return string
 	 */
-	protected static function Quote($string){
-		return '\''.static::RES($string).'\'';
+	protected static function Quote($string,$str = '\''){
+		return $str.static::RES($string).$str;
 	}
 
 	/**
-	 * @param array $columns
+	 * @param array  $columns
+	 * @param string $str
 	 *
 	 * @return string
 	 */
-	protected static function Columns2String(array $columns){
+	protected static function Columns2String(array $columns,$str = '\''){
 		if($columns === []){
 			return  '*';
 		}else{
@@ -131,7 +112,7 @@ class query {
 			$keys   = array_keys($columns);
 			$count  = count($columns);
 			for($i  = 0;$i < $count;$i++){
-				$return .= '\''.static::RES($columns[$keys[$i]]).'\', ';
+				$return .= $str.static::RES($columns[$keys[$i]]).$str.', ';
 			}
 			return substr($return,0,-2);
 		}
@@ -177,8 +158,8 @@ class query {
 	 */
 	public static function SELECT($table,array $columns = []){
 		static::$lastParams   = func_get_args();
-		$columns    = static::Columns2String($columns);
-		$table      = static::Quote($table);
+		$columns    = static::Columns2String($columns,'`');
+		$table      = static::Quote($table,'`');
 		static::$query= "SELECT $columns FROM $table";
 		return (new query\db_q2(static::$query));
 	}
@@ -191,10 +172,10 @@ class query {
 	 */
 	public static function INSERT($table,array $values = []){
 		static::$lastParams   = func_get_args();
-		$columns    = static::Columns2String(array_keys($values));
+		$columns    = static::Columns2String(array_keys($values),'`');
 		$values     = static::Columns2String($values);
 		$table      = static::RES($table);
-		static::$query= "INSERT INTO $table ($columns) VALUES ($values)";
+		static::$query= "INSERT INTO `$table` ($columns) VALUES ($values)";
 		return new query\db_q_Parent(static::$query);
 	}
 
@@ -205,13 +186,13 @@ class query {
 	 * @return where
 	 */
 	public static function UPDATE($table,array $values){
-		$table  = static::RES_array($table);
+		$table  = static::RES($table);
 		$keys   = array_keys($values);
 		$count  = count($values);
-		$query  = "UPDATE $table SET ";
+		$query  = "UPDATE `$table` SET ";
 		for($i  = 0;$i < $count;$i++){
 			$key= $keys[$i];
-			$query  .= static::Quote($key).'='.static::Quote($values[$key]);
+			$query  .= static::Quote($key,'`').'='.static::Quote($values[$key]);
 		}
 		static::$query = $query;
 		return new where(static::$query);
@@ -223,7 +204,7 @@ class query {
 	 * @return where
 	 */
 	public static function DELETE($table){
-		static::$query    = "DELETE FROM ".static::Quote($table);
+		static::$query    = "DELETE FROM ".static::Quote($table,'`');
 		return new where(static::$query);
 	}
 
@@ -233,7 +214,7 @@ class query {
 	 * @return query\db_q_Parent
 	 */
 	public static function DROP($table){
-		static::$query    = "DROP TABLE ".static::Quote($table);
+		static::$query    = "DROP TABLE ".static::Quote($table,'`');
 		return new query\db_q_Parent(static::$query);
 	}
 }
