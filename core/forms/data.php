@@ -64,7 +64,7 @@ class data {
 					return false;
 				}
 			}
-			return $_GET[$name];
+			return $_POST[$name];
 		}
 		return false;
 	}
