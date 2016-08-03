@@ -62,13 +62,6 @@ class result {
 	/**
 	 * @return mixed
 	 */
-	public function fetch_array(){
-		return query::getObj()->fetch_array($this->result);
-	}
-
-	/**
-	 * @return mixed
-	 */
 	public function fetch_all(){
 		return query::getObj()->fetch_all($this->result);
 	}
