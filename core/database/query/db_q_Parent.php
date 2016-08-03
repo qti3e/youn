@@ -47,8 +47,23 @@ class db_q_Parent {
 	 * @return mixed
 	 */
 	public function execute(){
-		return $this->query.';';
-		//return query::query($this->query.';');
+		return query::query($this->query.';');
+	}
+
+	/**
+	 * @param null $key
+	 *
+	 * @return mixed
+	 */
+	public function data($key = null){
+		return query::data($key);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function num_rows(){
+		return query::num_rows();
 	}
 
 	/**
@@ -81,12 +96,13 @@ class db_q_Parent {
 	}
 
 	/**
-	 * @param $string
+	 * @param        $string
+	 * @param string $str
 	 *
 	 * @return string
 	 */
-	protected function quote($string){
-		return '\''.$this->RES($string).'\'';
+	protected function quote($string,$str = '\''){
+		return $str.$this->RES($string).$str;
 	}
 
 	/**
@@ -107,5 +123,12 @@ class db_q_Parent {
 		$re             = $this->query;
 		$this->query    = '';
 		return $re;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getQuery() {
+		return $this->query;
 	}
 }

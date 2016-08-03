@@ -39,7 +39,7 @@ class where extends db_q_Parent{
 		$count  = count($validator);
 		$keys   = array_keys($validator);
 		for($i  = 0;$i < $count;$i++){
-			$query .= 'AND '.$this->quote($keys[$i]).'='.$this->quote($validator[$keys[$i]]).' ';
+			$query .= 'AND '.$this->quote($keys[$i],'`').'='.$this->quote($validator[$keys[$i]]).' ';
 		}
 		$this->add2Query($query);
 		return new db_q1($this->query);

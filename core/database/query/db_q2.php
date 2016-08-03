@@ -30,7 +30,7 @@ class db_q2 extends db_q1{
 	 */
 	public function COUNT(){
 		$this->clearQuery();
-		$this->add2Query("SELECT COUNT(".$this->quote(query::getLastParams(1)[0]).") FROM ".$this->quote(query::getLastParams(0)));
+		$this->add2Query("SELECT COUNT(".$this->quote(query::getLastParams(1)[0],'`').") FROM ".$this->quote(query::getLastParams(0),'`'));
 		return new db_q1($this->query);
 	}
 
@@ -39,7 +39,7 @@ class db_q2 extends db_q1{
 	 */
 	public function SUM(){
 		$this->clearQuery();
-		$this->add2Query("SELECT SUM(".$this->quote(query::getLastParams(1)[0]).") FROM ".$this->quote(query::getLastParams(0)));
+		$this->add2Query("SELECT SUM(".$this->quote(query::getLastParams(1)[0],'`').") FROM ".$this->quote(query::getLastParams(0),'`'));
 		return new db_q1($this->query);
 	}
 
@@ -48,7 +48,7 @@ class db_q2 extends db_q1{
 	 */
 	public function MAX(){
 		$this->clearQuery();
-		$this->add2Query("SELECT MAX(".$this->quote(query::getLastParams(1)[0]).") FROM ".$this->quote(query::getLastParams(0)));
+		$this->add2Query("SELECT MAX(".$this->quote(query::getLastParams(1)[0],'`').") FROM ".$this->quote(query::getLastParams(0),'`'));
 		return new db_q1($this->query);
 	}
 
@@ -57,7 +57,7 @@ class db_q2 extends db_q1{
 	 */
 	public function MIN(){
 		$this->clearQuery();
-		$this->add2Query("SELECT MIN(".$this->quote(query::getLastParams(1)[0]).") FROM ".$this->quote(query::getLastParams(0)));
+		$this->add2Query("SELECT MIN(".$this->quote(query::getLastParams(1)[0],'`').") FROM ".$this->quote(query::getLastParams(0),'`'));
 		return new db_q1($this->query);
 	}
 
@@ -66,7 +66,7 @@ class db_q2 extends db_q1{
 	 */
 	public function AVG(){
 		$this->clearQuery();
-		$this->add2Query("SELECT AVG(".$this->quote(query::getLastParams(1)[0]).") FROM ".$this->quote(query::getLastParams(0)));
+		$this->add2Query("SELECT AVG(".$this->quote(query::getLastParams(1)[0],'`').") FROM ".$this->quote(query::getLastParams(0)),'`');
 		return new db_q1($this->query);
 	}
 }
