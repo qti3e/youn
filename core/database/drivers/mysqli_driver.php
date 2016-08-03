@@ -86,4 +86,31 @@ class mysqli_driver implements driver{
 	public function query($query){
 		return $this->object->query($query);
 	}
+
+	/**
+	 * @param \mysqli_result $result
+	 *
+	 * @return int
+	 */
+	public function num_rows($result) {
+		return $result->num_rows;
+	}
+
+	/**
+	 * @param \mysqli_result $re
+	 *
+	 * @return array
+	 */
+	public function fetch_assoc($re){
+		return $re->fetch_assoc();
+	}
+
+	/**
+	 * @param \mysqli_result $result
+	 *
+	 * @return mixed
+	 */
+	public function fetch_all($result) {
+		return $result->fetch_all();
+	}
 }
