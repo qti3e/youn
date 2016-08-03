@@ -68,9 +68,36 @@ class sqlite_driver implements driver{
 	/**
 	 * @param $query
 	 *
-	 * @return array
+	 * @return \SQLite3Result
 	 */
 	public function query($query) {
-		return $this->object->query($query)->fetchArray();
+		return $this->object->query($query);
+	}
+
+	/**
+	 * @param \SQLite3Result $result
+	 *
+	 * @return int
+	 */
+	public function num_rows($result) {
+		return sqlite_num_rows($result);
+	}
+
+	/**
+	 * @param \SQLite3Result $result
+	 *
+	 * @return array
+	 */
+	public function fetch_all($result) {
+		return sqlite_fetch_all($result);
+	}
+
+	/**
+	 * @param \SQLite3Result $result
+	 *
+	 * @return array
+	 */
+	public function fetch_assoc($result) {
+		return $result->fetchArray(SQLITE_ASSOC);
 	}
 }
