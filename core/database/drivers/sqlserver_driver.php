@@ -97,6 +97,33 @@ class sqlserver_driver implements driver{
 		if($stmt === false){
 			return false;
 		}
-		return sqlsrv_fetch_array($stmt);
+		return $stmt;
+	}
+
+	/**
+	 * @param $result
+	 *
+	 * @return bool|int
+	 */
+	public function num_rows($result) {
+		return sqlsrv_num_rows($result);
+	}
+
+	/**
+	 * @param $result
+	 *
+	 * @return array|false|null
+	 */
+	public function fetch_all($result) {
+		return sqlsrv_fetch_array($result);
+	}
+
+	/**
+	 * @param $result
+	 *
+	 * @return array|false|null
+	 */
+	public function fetch_assoc($result) {
+		return sqlsrv_fetch_array($result,SQLSRV_FETCH_ASSOC);
 	}
 }
