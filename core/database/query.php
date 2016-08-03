@@ -217,4 +217,11 @@ class query {
 		static::$query    = "DROP TABLE ".static::Quote($table,'`');
 		return new query\db_q_Parent(static::$query);
 	}
+
+	/**
+	 * @return driver
+	 */
+	public static function getObj(){
+		return self::$driver;
+	}
 }
