@@ -58,7 +58,31 @@ class query {
 	 * query constructor.
 	 */
 	public function __construct() {
-		static::$driver = new mysqli_driver();
+		switch(strtolower(db_driver)){
+			case 'mysqli':
+				static::$driver = new mysqli_driver();
+				break;
+			case 'pdo':
+				static::$driver = new pdo_driver();
+				break;
+			case 'postgre':
+				static::$driver = new postgre_driver();
+				break;
+ 			case 'sqlite':
+			    static::$driver = new sqlite_driver();
+			    break;
+ 			case 'sqlserver':
+			    static::$driver = new sqlserver_driver();
+			    break;
+			default:
+				if(function_exists('mysqli_connect')){
+					static::$driver = new mysqli_driver();
+				}elseif(extension_loaded('pdo')){
+					static::$driver = new pdo_driver();
+				}else{
+					throw new youn_exception('Can\'t load application because both of pdo and mysqli are disabled');
+				}
+		}
 	}
 
 	/**
