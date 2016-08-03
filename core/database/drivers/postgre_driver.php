@@ -59,7 +59,7 @@ class postgre_driver implements driver{
 		if(!$result){
 			return false;
 		}
-		return pg_fetch_array($_REQUEST);
+		return $result;
 	}
 
 	/**
@@ -88,5 +88,32 @@ class postgre_driver implements driver{
 	 */
 	public function getErrorDetail() {
 		return '';
+	}
+
+	/**
+	 * @param $result
+	 *
+	 * @return int
+	 */
+	public function num_rows($result) {
+		return pg_num_rows($result);
+	}
+
+	/**
+	 * @param $result
+	 *
+	 * @return array
+	 */
+	public function fetch_all($result) {
+		return pg_fetch_all($result);
+	}
+
+	/**
+	 * @param $result
+	 *
+	 * @return array
+	 */
+	public function fetch_assoc($result) {
+		return pg_fetch_assoc($result);
 	}
 }
