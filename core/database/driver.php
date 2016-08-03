@@ -66,14 +66,7 @@ interface driver {
 	 * @return mixed
 	 */
 	public function fetch_assoc($result);
-
-	/**
-	 * @param $result
-	 *
-	 * @return mixed
-	 */
-	public function fetch_array($result);
-
+	
 	/**
 	 * @param $result
 	 *
