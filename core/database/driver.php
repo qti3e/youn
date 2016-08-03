@@ -52,4 +52,32 @@ interface driver {
 	 * @return mixed
 	 */
 	public function query($query);
+
+	/**
+	 * @param $result
+	 *
+	 * @return mixed
+	 */
+	public function num_rows($result);
+
+	/**
+	 * @param $result
+	 *
+	 * @return mixed
+	 */
+	public function fetch_assoc($result);
+
+	/**
+	 * @param $result
+	 *
+	 * @return mixed
+	 */
+	public function fetch_array($result);
+
+	/**
+	 * @param $result
+	 *
+	 * @return mixed
+	 */
+	public function fetch_all($result);
 }
