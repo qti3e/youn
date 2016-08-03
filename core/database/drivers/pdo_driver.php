@@ -61,7 +61,9 @@ class pdo_driver implements driver{
 	 * @return \PDOStatement
 	 */
 	public function query($query) {
-		return $this->object->query($query);
+		$sth    = $this->object->prepare($query);
+		$sth->execute();
+		return $sth;
 	}
 
 	/**
@@ -90,5 +92,32 @@ class pdo_driver implements driver{
 	 */
 	public function getObject() {
 		return $this->object;
+	}
+
+	/**
+	 * @param \PDOStatement $result
+	 *
+	 * @return int
+	 */
+	public function num_rows($result) {
+		return $result->rowCount();
+	}
+
+	/**
+	 * @param \PDOStatement $result
+	 *
+	 * @return array
+	 */
+	public function fetch_all($result) {
+		return $result->fetchAll();
+	}
+
+	/**
+	 * @param \PDOStatement $result
+	 *
+	 * @return mixed
+	 */
+	public function fetch_assoc($result) {
+		return $result->fetch(\PDO::FETCH_ASSOC);
 	}
 }
