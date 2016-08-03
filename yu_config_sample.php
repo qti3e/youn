@@ -85,6 +85,7 @@ define('mail_from','noreplay@example.com');
  * Default name of mailer sender
  */
 define('mail_from_name','Noreplay');
+//todo: set crypto_key to an null string and make an internal error if it's empty
 /**
  * Crypto special key
  * Change it!
