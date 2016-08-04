@@ -29,9 +29,6 @@ use core\database\query;
  * @package core\database\query
  */
 class where extends db_q_Parent{
-	/**
-	 * @var bool
-	 */
 	protected $whereCalled  = false;
 	/**
 	 * @param array $validator
@@ -51,21 +48,26 @@ class where extends db_q_Parent{
 	}
 
 	/**
-	 * @param array $validator
-	 * @param       $comparison
+	 * @param array  $validator
+	 * @param        $comparison
+	 * @param string $op
 	 *
 	 * @return db_q1
 	 */
-	public function whereComparison(array $validator,$comparison){
+	public function whereComparison(array $validator,$comparison,$op = 'AND'){
+		$query  = '';
 		if(!$this->whereCalled){
-			$this->WHERE();
+			$query  .= 'WHERE ';
 		}
 		$keys   = array_keys($validator);
 		$count  = count($validator);
-		$query  = '';
 		$comparison = ' '.$comparison.' ';
+		$op         = $op.' ';
 		for($i  = 0;$i < $count;$i++){
-			$query .= 'AND '.$this->quote($keys[$i],'`').$comparison.$this->quote($validator[$keys[$i]]).' ';
+			if($i !== 0 || $this->whereCalled){
+				$query .= $op;
+			}
+			$query .= $this->quote($keys[$i],'`').$comparison.$this->quote($validator[$keys[$i]]).' ';
 		}
 		$this->add2Query($query);
 		return new db_q1($this->query);
