@@ -65,4 +65,21 @@ class result {
 	public function fetch_all(){
 		return query::getObj()->fetch_all($this->result);
 	}
+
+	/**
+	 * @param null $key
+	 *
+	 * @return array
+	 */
+	public function data($key = null){
+		$re = [];
+		while($row = $this->fetch_assoc()){
+			if(isset($row[$key])){
+				$re[$row[$key]] = $row;
+			}else{
+				$re[]   = $row;
+			}
+		}
+		return $re;
+	}
 }
