@@ -160,11 +160,11 @@ class query {
 	/**
 	 * @param $query
 	 *
-	 * @return mixed
+	 * @return result
 	 */
 	public static function query($query){
 		static::$lastQuery    = $query;
-		return static::$driver->query($query);
+		return new result(static::$driver->query($query));
 	}
 
 	/**

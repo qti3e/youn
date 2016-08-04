@@ -44,26 +44,10 @@ class db_q_Parent {
 	}
 
 	/**
-	 * @return mixed
+	 * @return \core\database\result
 	 */
 	public function execute(){
 		return query::query($this->query.';');
-	}
-
-	/**
-	 * @param null $key
-	 *
-	 * @return mixed
-	 */
-	public function data($key = null){
-		return query::data($key);
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function num_rows(){
-		return query::num_rows();
 	}
 
 	/**
