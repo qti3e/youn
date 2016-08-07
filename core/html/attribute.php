@@ -199,7 +199,7 @@ class attribute{
 	 * @return $this
 	 */
 	public function __call($name, $arguments) {
-		$name   = str_replace('_','-',$name);
+		$name   = strtolower(str_replace('_','-',$name));
 		if(!isset($arguments[0])){
 			$arguments[0]   = '';
 		}
@@ -246,7 +246,6 @@ class attribute{
 	 * @return $this
 	 */
 	public function _set($name,$value){
-		$name   = str_replace(' ','-',$name);
 		return $this->__call($name,[$value]);
 	}
 
@@ -280,5 +279,38 @@ class attribute{
 		$re         = $this->text;
 		$this->text = (string)$newText;
 		return $re;
+	}
+
+	/**
+	 * @param $class
+	 *
+	 * @return attribute
+	 */
+	public function _addClass($class){
+		if(isset($this->attributes['class'])){
+			$class  .= ' '.$class;
+		}
+		return $this->__call('class',[$class]);
+	}
+
+	/**
+	 * @param $class
+	 *
+	 * @return $this
+	 */
+	public function _unsetClass($class){
+		if(isset($this->attributes['class'])){
+			$classes    = explode(' ',$this->attributes['class']);
+			$keys   = array_keys($classes);
+			$count  = count($classes);
+			for($i  = 0;$i < $count;$i++){
+			    $key= $keys[$i];
+			    if($classes[$key] == $class){
+				    unset($classes[$key]);
+			    }
+			}
+			$this->attributes['class']  = implode(' ',$classes);
+		}
+		return $this;
 	}
 }
