@@ -51,6 +51,7 @@ class download {
 		http::header('Cache-Control','must-revalidate');
 		http::header('Pragma','public');
 		http::header('Content-Length',filesize($file));
-		return file_get_contents($file);
+		print file_get_contents($file);
+		exit();
 	}
 }
