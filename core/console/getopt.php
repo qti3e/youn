@@ -74,8 +74,41 @@ class getopt {
 		return $last;
 	}
 
+	/**
+	 * @param $input
+	 *
+	 * @return array
+	 */
 	public static function parse($input){
-		return $input;
+		$input  = trim($input);
+		$input  = str_replace('=',' ',$input);
+		/**
+		 * @link http://stackoverflow.com/a/2202489/6126002
+		 */
+		preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $input, $matches);
+		$matches    = $matches[0];
+		$count      = count($matches);
+		$return     = [];
+		for($i  = 0;$i < $count;$i++){
+			$case   = $matches[$i];
+			$m      = $i+1;
+			$value  = false;
+			if(isset($matches[$m])){
+				if($matches[$m][0] !== '-'){
+					$value  = $matches[$m];
+					if($matches[$m][0] == '"'){
+						$value  = stripslashes(substr($value,1,-1));
+						//todo convert stripslashes to replace '\n' with "\n"
+					}
+				}
+			}
+			if(substr($case,0,2) == '--'){
+				$return[substr($case,2)]    = $value;
+			}elseif(substr($case,0,1) == '-'){
+				$return[substr($case,1)]    = $value;
+			}
+		}
+		return $return;
 	}
 
 	/**
