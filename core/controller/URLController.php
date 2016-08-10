@@ -23,6 +23,7 @@ namespace core\controller;
 
 
 use application\controller;
+use core\console\CommandController;
 use core\database\query;
 use core\exception\error_handler;
 use core\http\http;
@@ -98,23 +99,29 @@ class URLController{
 	 * @return void
 	 */
 	public function run($params = ''){
-		template::flushData();
-		static::loader();
-		if($this->configLoaded){
-			//Read file url and run the specific page
-			if(empty($params)){
-				controller::index();
-			}else{
-				if(preg_match('/^[a-zA-Z0-9\/]*$/',$params)){
-					$params = explode('/',$params);
-					controller::open($params);
-				}else{
-					error_handler::DisplayError('Illegal Characters','Your request has some illegal characters');
-				}
-			}
+		if(php_sapi_name() == 'cli'){
+			//Disable output buffering
+			ob_end_clean();
+			new CommandController();
 		}else{
-			//throw an error that says "Internal server error: you should set config file first"
-			error_handler::DisplayError('Load config file','You should load config file.');
+			template::flushData();
+			static::loader();
+			if($this->configLoaded){
+				//Read file url and run the specific page
+				if(empty($params)){
+					controller::index();
+				}else{
+					if(preg_match('/^[a-zA-Z0-9\/]*$/',$params)){
+						$params = explode('/',$params);
+						controller::open($params);
+					}else{
+						error_handler::DisplayError('Illegal Characters','Your request has some illegal characters');
+					}
+				}
+			}else{
+				//throw an error that says "Internal server error: you should set config file first"
+				error_handler::DisplayError('Load config file','You should load config file.');
+			}
 		}
 	}
 
