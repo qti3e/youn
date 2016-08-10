@@ -22,35 +22,90 @@
 namespace core\console;
 
 /**
- * Class CommandController
+ * Class getopt
  * @package core\console
  */
-class CommandController {
+class getopt {
 	/**
-	 * CommandController constructor.
-	 * Print welcome message and ask commands form user
+	 * @var array
 	 */
-	public function __construct() {
-		print "Welcome to youn cli mode\n>";
-		while(strtolower($input = trim(fgets(STDIN))) !== 'exit'){
-
-			echo "\n>";
-		}
-	}
-
+	protected $opts     = [];
 	/**
-	 * Print good bye message
+	 * @var array
 	 */
-	public function __destruct() {
-		print "Good bye!\n";
-	}
+	protected $default  = [];
 
 	/**
+	 * getopt constructor.
+	 *
 	 * @param $string
+	 */
+	public function __construct($string){
+		$this->opts = static::parse($string);
+	}
+
+	/**
+	 * @param array $default
 	 *
 	 * @return array
 	 */
-	protected function getOpt($string){
-		return getopt::parse($string);
+	public function setDefaults(array $default){
+		$last   = $this->default;
+		$this->default  = $default;
+		return $last;
+	}
+
+	/**
+	 * @param      $name
+	 * @param null $value
+	 *
+	 * @return null
+	 *
+	 */
+	public function def($name,$value = null){
+		if($value === null){
+			if(isset($this->default[$name])){
+				return $this->default[$name];
+			}
+			return null;
+		}
+		$last   = $this->def($name);
+		$this->default[$name]   = $value;
+		return $last;
+	}
+
+	public static function parse($input){
+		return $input;
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return null
+	 */
+	public function __get($name) {
+		if(isset($this->opts[$name])){
+			return $this->opts[$name];
+		}
+		return $this->def($name);
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return bool
+	 */
+	public function __isset($name) {
+		return isset($this->opts[$name]);
+	}
+
+	/**
+	 * @param $name
+	 * @param $value
+	 *
+	 * @return mixed
+	 */
+	public function __set($name, $value) {
+		return $this->opts[$name]   = $value;
 	}
 }
