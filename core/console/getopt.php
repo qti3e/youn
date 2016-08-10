@@ -97,8 +97,10 @@ class getopt {
 				if($matches[$m][0] !== '-'){
 					$value  = $matches[$m];
 					if($matches[$m][0] == '"'){
-						$value  = stripslashes(substr($value,1,-1));
-						//todo convert stripslashes to replace '\n' with "\n"
+						$value  = substr($value,1,-1);
+						$value  = str_replace('\n',"\n",$value);
+						$value  = str_replace('\"',"\"",$value);
+						$value  = str_replace('\\\\',"\\",$value);
 					}
 				}
 			}
