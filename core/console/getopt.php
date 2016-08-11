@@ -75,6 +75,10 @@ class getopt {
 	}
 
 	/**
+	 * sub  --sw1 "Value for sw1" --sw2="Value for sw2" -show
+	 * first parameters are sub commands
+	 * -    is for flags    //bool->true or false
+	 * --   is a switch     //Sometimes with value
 	 * @param $input
 	 *
 	 * @return array
@@ -88,7 +92,7 @@ class getopt {
 		preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $input, $matches);
 		$matches    = $matches[0];
 		$count      = count($matches);
-		$return     = [''];
+		$return     = ['sub'=>'','switches'=>[],'flags'=>[]];
 		$b          = false;
 		for($i  = 0;$i < $count;$i++){
 			$case   = $matches[$i];
@@ -105,22 +109,12 @@ class getopt {
 					}
 				}
 			}
-			if($b){
-				if(substr($case,0,2) == '--'){
-					$return[substr($case,2)]    = $value;
-				}elseif(substr($case,0,1) == '-'){
-					$return[substr($case,1)]    = $value;
-				}
-			}else{
-				if(substr($case,0,2) == '--'){
-					$return[substr($case,2)]    = $value;
-					$b                          = true;
-				}elseif(substr($case,0,1) == '-'){
-					$return[substr($case,1)]    = $value;
-					$b                          = true;
-				}else{
-					$return[0]                 .= ' '.$case;
-				}
+			if(substr($case,0,2) == '--'){
+				$return['switches'][]  =   strtolower(substr($case,2));
+			}elseif(substr($case,0,1) == '-'){
+				$return['flags'][strtolower(substr($case,1))]    = $value;
+			}elseif(!$b){
+				$return['sub']  .= ' '.$case;
 			}
 		}
 		$return[0]  = trim($return[0]);
@@ -131,7 +125,7 @@ class getopt {
 	 * @return mixed
 	 */
 	public function getSubCommand(){
-		return $this->opts[0];
+		return $this->opts['sub'];
 	}
 
 	/**
@@ -140,8 +134,9 @@ class getopt {
 	 * @return null
 	 */
 	public function __get($name) {
-		if(isset($this->opts[$name])){
-			return $this->opts[$name];
+		$name   = strtolower($name);
+		if(isset($this->opts['switches'][$name])){
+			return $this->opts['switches'][$name];
 		}
 		return $this->def($name);
 	}
@@ -151,8 +146,9 @@ class getopt {
 	 *
 	 * @return bool
 	 */
-	public function __isset($name) {
-		return isset($this->opts[$name]);
+	public function __isset($name){
+		$name   = strtolower($name);
+		return isset($this->opts['switches'][$name]) || in_array($name,$this->opts['flags']);
 	}
 
 	/**
@@ -162,7 +158,7 @@ class getopt {
 	 * @return mixed
 	 */
 	public function __set($name, $value) {
-		return $this->opts[$name]   = $value;
+		return $this->opts['switches'][strtolower($name)]   = $value;
 	}
 
 	/**
@@ -181,7 +177,7 @@ class getopt {
 	 * @return mixed
 	 */
 	public function set($name,$value){
-		return $this->set($name,$value);
+		return $this->__set($name,$value);
 	}
 
 	/**
@@ -189,5 +185,21 @@ class getopt {
 	 */
 	public function getOpts(){
 		return $this->opts;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFlags(){
+		return $this->opts['flags'];
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return bool
+	 */
+	public function getFlag($name){
+		return in_array(strtolower($name),$this->opts['flags']);
 	}
 }
