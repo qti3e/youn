@@ -164,4 +164,30 @@ class getopt {
 	public function __set($name, $value) {
 		return $this->opts[$name]   = $value;
 	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return null
+	 */
+	public function get($name){
+		return $this->__get($name);
+	}
+
+	/**
+	 * @param $name
+	 * @param $value
+	 *
+	 * @return mixed
+	 */
+	public function set($name,$value){
+		return $this->set($name,$value);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getOpts(){
+		return $this->opts;
+	}
 }
