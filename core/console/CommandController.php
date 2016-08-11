@@ -32,8 +32,16 @@ class CommandController {
 	 */
 	public function __construct() {
 		print "Welcome to youn cli mode\n>";
-		while(strtolower($input = trim(fgets(STDIN))) !== 'exit'){
-
+		while(strtolower($input = trim(fgets(STDIN)).' ') !== 'exit '){
+			if(!empty(trim($input))){
+				$command    = strtolower(substr($input,0,strpos($input,' ')));
+				$class      = 'core\\console\\commands\\'.$command.'Command';
+				if(class_exists($class)){
+					new $class(new getopt(substr($input,strpos($input,' '))));
+				}else{
+					echo 'Sorry but <'.$command.'> command was not found.';
+				}
+			}
 			echo "\n>";
 		}
 	}
