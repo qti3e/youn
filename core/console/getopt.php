@@ -88,7 +88,8 @@ class getopt {
 		preg_match_all('/"(?:\\\\.|[^\\\\"])*"|\S+/', $input, $matches);
 		$matches    = $matches[0];
 		$count      = count($matches);
-		$return     = [];
+		$return     = [''];
+		$b          = false;
 		for($i  = 0;$i < $count;$i++){
 			$case   = $matches[$i];
 			$m      = $i+1;
@@ -104,13 +105,33 @@ class getopt {
 					}
 				}
 			}
-			if(substr($case,0,2) == '--'){
-				$return[substr($case,2)]    = $value;
-			}elseif(substr($case,0,1) == '-'){
-				$return[substr($case,1)]    = $value;
+			if($b){
+				if(substr($case,0,2) == '--'){
+					$return[substr($case,2)]    = $value;
+				}elseif(substr($case,0,1) == '-'){
+					$return[substr($case,1)]    = $value;
+				}
+			}else{
+				if(substr($case,0,2) == '--'){
+					$return[substr($case,2)]    = $value;
+					$b                          = true;
+				}elseif(substr($case,0,1) == '-'){
+					$return[substr($case,1)]    = $value;
+					$b                          = true;
+				}else{
+					$return[0]                 .= ' '.$case;
+				}
 			}
 		}
+		$return[0]  = trim($return[0]);
 		return $return;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSubCommand(){
+		return $this->opts[0];
 	}
 
 	/**
