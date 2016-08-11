@@ -38,23 +38,26 @@ class helpCommand implements command{
 	 */
 	public function __construct(getopt $opts) {
 		$class      = 'core\\console\\commands\\'.strtolower($opts->getSubCommand()).'Command';
+		if(empty(trim($opts->getSubCommand()))){
+			$class  = 'core\\console\\commands\\helpCommand';
+		}
 		if(class_exists($class)){
-			echo (string)$class::getHelp();
+			$help   = new help();
+			$class::getHelp($help);
+			echo $help->string();
 		}elseif(!empty(trim($opts->getSubCommand()))){
 			echo "Command <{$opts->getSubCommand()}> was not found.";
-		}else{
-			echo (string)helpCommand::getHelp();
 		}
 	}
 
 	/**
-	 * @return string
+	 * @param help $help
+	 *
+	 * @return void
 	 */
-	public static function getHelp() {
-		$help   = new help();
+	public static function getHelp(help $help) {
 		$help->title('Help')
 				->description('Show helps for a command if exists.')
 				->usage("help [command name]");
-		return $help->string();
 	}
 }
