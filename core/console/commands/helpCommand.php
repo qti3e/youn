@@ -22,6 +22,39 @@
 namespace core\console\commands;
 
 
-class helpCommand {
+use core\console\command;
+use core\console\getopt;
+use core\console\help;
 
+/**
+ * Class helpCommand
+ * @package core\console\commands
+ */
+class helpCommand implements command{
+	/**
+	 * helpCommand constructor.
+	 *
+	 * @param getopt $opts
+	 */
+	public function __construct(getopt $opts) {
+		$class      = 'core\\console\\commands\\'.strtolower($opts->getSubCommand()).'Command';
+		if(class_exists($class)){
+			echo (string)$class::getHelp();
+		}elseif(!empty(trim($opts->getSubCommand()))){
+			echo "Command <{$opts->getSubCommand()}> was not found.";
+		}else{
+			echo (string)helpCommand::getHelp();
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getHelp() {
+		$help   = new help();
+		$help->title('Help')
+				->description('Show helps for a command if exists.')
+				->usage("help [command name]");
+		return $help->string();
+	}
 }
