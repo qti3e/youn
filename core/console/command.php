@@ -29,7 +29,7 @@ interface command{
 	/**
 	 * @return mixed
 	 */
-	public function getHelp();
+	public static function getHelp();
 
 	/**
 	 * command constructor.
