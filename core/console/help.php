@@ -159,7 +159,7 @@ class help{
 		}
 		$return .= "Switches:\n";
 		if(empty($this->switches)){
-			$return .= "\tThis command doesn't have any switch";
+			$return .= "\tThis command doesn't have any switch\n";
 		}else{
 			//--
 			$keys   = array_keys($this->switches);
@@ -172,7 +172,7 @@ class help{
 		}
 		$return .= "Flags:\n";
 		if(empty($this->flags)){
-			$return .= "\tThis command doesn't have any flag";
+			$return .= "\tThis command doesn't have any flag\n";
 		}else{
 			//-
 			$keys   = array_keys($this->flags);

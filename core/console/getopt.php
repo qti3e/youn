@@ -117,7 +117,7 @@ class getopt {
 				$return['sub']  .= ' '.$case;
 			}
 		}
-		$return[0]  = trim($return[0]);
+		$return['sub']  = trim($return['sub']);
 		return $return;
 	}
 
