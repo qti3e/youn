@@ -200,8 +200,8 @@ class getopt {
 	/**
 	 * @return mixed
 	 */
-	public function getFlags(){
-		return $this->opts['flags'];
+	public function getSwitches(){
+		return $this->opts['switches'];
 	}
 
 	/**
@@ -209,7 +209,7 @@ class getopt {
 	 *
 	 * @return bool
 	 */
-	public function getFlag($name){
-		return in_array(strtolower($name),$this->opts['flags']);
+	public function getSwitch($name){
+		return in_array(strtolower($name),$this->opts['switches']);
 	}
 }
