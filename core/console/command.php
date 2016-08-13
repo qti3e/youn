@@ -27,9 +27,11 @@ namespace core\console;
  */
 interface command{
 	/**
+	 * @param help $help
+	 *
 	 * @return mixed
 	 */
-	public static function getHelp();
+	public static function getHelp(help $help);
 
 	/**
 	 * command constructor.
