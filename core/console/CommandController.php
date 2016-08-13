@@ -49,6 +49,7 @@ class CommandController {
 						new $class(new getopt($input));
 					}else{
 						echo 'Sorry but <'.$command.'> command was not found.';
+						break;
 					}
 				}
 			}
