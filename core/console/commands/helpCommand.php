@@ -45,7 +45,19 @@ class helpCommand implements command{
 		if(class_exists($class)){
 			$help   = new help();
 			$class::getHelp($help);
-			CommandController::setReturn($help->string());
+			if($opts->getSwitch('html') || $opts->getSwitch('h')){
+				$re = ($help->html());
+			}else{
+				$re = $help->string();
+			}
+			$opts->def('save',$opts->get('s'));
+			if($opts->get('save') === null){
+				CommandController::setReturn($re);
+			}else{
+				//todo: use fopen instead of file_put_contents because file_put_contents writes data after console close
+				file_put_contents($opts->get('save'),$re);
+				CommandController::setReturn("Document saved at <".$opts->get('save').">");
+			}
 		}elseif(!empty(trim($opts->getSubCommand()))){
 			CommandController::setReturn("Command <{$opts->getSubCommand()}> was not found.");
 		}
@@ -59,6 +71,8 @@ class helpCommand implements command{
 	public static function getHelp(help $help) {
 		$help->title('Help')
 				->description('Show helps for a command if exists.')
-				->usage("help [command name]");
+				->usage("help [command name]")
+				->addSwitch('(h)tml','Print output in html page format.')
+				->addFlag('(s)ave=file name','Don\'t print output to the screen and save it to entered file name');
 	}
 }
