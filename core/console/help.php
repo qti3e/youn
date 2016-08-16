@@ -213,7 +213,7 @@ class help{
 		}else{
 			$return .= trim($this->usage)."</p><br>";
 		}
-		$return .= "<h3>Switches:</h3><br>";
+		$return .= "<h3>Switches:</h3>";
 		if(empty($this->switches)){
 			$return .= "<p>This command doesn't have any switch.</p>";
 		}else{
@@ -226,7 +226,7 @@ class help{
 				$return .=  "--<b>".trim($key)."</b>:<br>&#9;<p>".trim($val)."</p><br>";
 			}
 		}
-		$return .= "<h3>Flags:</h3><br>";
+		$return .= "<h3>Flags:</h3>";
 		if(empty($this->flags)){
 			$return .= "<p>This command doesn't have any flag.</p>";
 		}else{
