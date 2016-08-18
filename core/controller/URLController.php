@@ -40,6 +40,10 @@ class URLController{
 	 */
 	private $configLoaded   = false;
 	/**
+	 * @var
+	 */
+	private static $configFile;
+	/**
 	 * @var bool
 	 */
 	private static $json    = false;
@@ -85,12 +89,20 @@ class URLController{
 	 * @return void
 	 */
 	public function config($configFile){
+		static::$configFile = $configFile;
 		if(file_exists($configFile)){
 			$this->configLoaded = true;
 			include $configFile;
 			return;
 		}
 		error_handler::DisplayError('Can\'t load config file.','Can\'t find "'.$configFile.'" <h3>How to fix it?</h3>Rename <b>yu_config_sample.php</b> to <b>yu_config.php</b> and put our own values in their right place.');
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getConfigFile(){
+		return static::$configFile;
 	}
 
 	/**
