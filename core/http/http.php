@@ -31,6 +31,10 @@ class http {
 	 * @var array
 	 */
 	protected static $headers   = [];
+	/**
+	 * @var int
+	 */
+	protected static $responseCode  = 200;
 
 	/**
 	 * @return mixed
@@ -55,6 +59,7 @@ class http {
 		for($i  = 0;$i < $count;$i++){
 			header($keys[$i].': '.static::$headers[$keys[$i]]);
 		}
+		http_response_code(static::$responseCode);
 	}
 
 	/**
@@ -89,5 +94,35 @@ class http {
 	 */
 	public static function issetHeader($key){
 		return isset(static::$headers[trim($key)]);
+	}
+
+	/**
+	 * @param $code
+	 *
+	 * @return int
+	 */
+	public static function responseCode($code = null){
+		if(is_int($code)){
+			static::$responseCode = $code;
+		}
+		return static::$responseCode;
+	}
+
+	/**
+	 * @return int
+	 */
+	public static function getResponseCode(){
+		return static::$responseCode;
+	}
+
+	/**
+	 * @param $code
+	 *
+	 * @return int
+	 */
+	public static function setResponseCode($code){
+		$last   = static::$responseCode;
+		static::$responseCode   = $code;
+		return $last;
 	}
 }
