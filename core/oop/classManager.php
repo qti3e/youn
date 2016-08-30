@@ -20,8 +20,66 @@
  *****************************************************************************/
 
 namespace core\oop;
+use ReflectionClass;
 
-
+/**
+ * Class classManager
+ * @package core\oop
+ */
 class classManager {
+	/**
+	 * @param $className
+	 *
+	 * @return bool
+	 */
+	public static function isInternal($className){
+		if(!class_exists($className)){
+			return false;
+		}
+		$class  = new ReflectionClass($className);
+		return $class->isInternal();
+	}
 
+	/**
+	 * @param $className
+	 *
+	 * @return bool
+	 */
+	public static function isUserDefined($className){
+		if(!class_exists($className)){
+			return false;
+		}
+		$class  = new ReflectionClass($className);
+		return $class->isUserDefined();
+	}
+
+	/**
+	 * @param $className
+	 *
+	 * @return array|bool
+	 */
+	public static function getLocation($className){
+		if(!class_exists($className)){
+			return false;
+		}
+		$class  = new ReflectionClass($className);
+		return [
+			'file'  => $class->getFileName(),
+			'start' => $class->getStartLine(),
+			'end'   => $class->getEndLine()
+		];
+	}
+
+	/**
+	 * @param $className
+	 *
+	 * @return bool|string
+	 */
+	public static function getDoc($className){
+		if(!class_exists($className)){
+			return false;
+		}
+		$class  = new ReflectionClass($className);
+		return $class->getDocComment();
+	}
 }
