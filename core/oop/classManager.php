@@ -82,4 +82,34 @@ class classManager {
 		$class  = new ReflectionClass($className);
 		return $class->getDocComment();
 	}
+
+	/**
+	 * @param $className
+	 *
+	 * @return array|bool
+	 */
+	public static function getConstants($className){
+		if(!class_exists($className)){
+			return false;
+		}
+		$class  = new ReflectionClass($className);
+		return $class->getConstants();
+	}
+
+	/**
+	 * @param $className
+	 * @param $name
+	 *
+	 * @return bool|mixed
+	 */
+	public static function getConstant($className,$name){
+		if(!class_exists($className)){
+			return false;
+		}
+		$class  = new ReflectionClass($className);
+		if(!$class->hasConstant($name)){
+			return false;
+		}
+		return $class->getConstant($name);
+	}
 }
