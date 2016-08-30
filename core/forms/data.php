@@ -70,13 +70,13 @@ class data {
 	}
 
 	/**
-	 * @param $name
-	 * @param $handler
+	 * @param          $name
+	 * @param \Closure $handler
 	 *
 	 * @return bool|int
 	 * @throws formException
 	 */
-	public static function file($name,$handler){
+	public static function file($name,\Closure $handler){
 		if(!isset($_FILES[$name])){
 			return false;
 		}
